@@ -1,0 +1,12 @@
+module fr.josso.fractales {
+    requires javafx.controls;
+    requires javafx.fxml;
+
+    requires org.controlsfx.controls;
+    requires org.kordamp.bootstrapfx.core;
+
+    opens fr.josso.fractales to javafx.fxml;
+    exports fr.josso.fractales;
+    exports fr.josso.fractales.Graphics;
+    opens fr.josso.fractales.Graphics to javafx.fxml;
+}
