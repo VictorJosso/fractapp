@@ -10,8 +10,6 @@ public class ComplexPlane {
     private final int minX;
     private final int minY;
     private final double step;
-    private final int radius;
-    private final long maxIter;
     private final int scale;
     private final ArrayList<ArrayList<Complex>> points;
     ResultImg img;
@@ -23,25 +21,16 @@ public class ComplexPlane {
         this.minX = builder.minX;
         this.minY = builder.minY;
         this.step = builder.step;
-        this.radius = builder.radius;
-        this.maxIter = builder.maxIter;
         this.points = builder.points;
         this.scale = builder.scale;
-
-        this.img = new ResultImg(this.maxX, this.minX, this.maxY, this.minY, this.step, this.scale, this.points.get(0).get(0));
     }
 
     public static ComplexPlaneBuilder builder() {
         return new ComplexPlaneBuilder();
     }
 
-
-    public void trace(UnaryOperator<Complex> f) {
-        points.parallelStream()
-                .forEach(line -> line.parallelStream()
-                        .forEach(z ->
-                                img.writeInImg(z.getRealPart(), z.getImaginaryPart(), this.scale, z.divergenceIndex(this.maxIter, this.radius, f), this.maxIter)));
-        img.endTask();
+    public ArrayList<ArrayList<Complex>> getPoints() {
+        return points;
     }
 
 
@@ -52,8 +41,6 @@ public class ComplexPlane {
         private int minX = -1;
         private int minY = -1;
         private double step = 0.01;
-        private int radius = 2;
-        private long maxIter = 1000;
         private int scale;
         private ArrayList<ArrayList<Complex>> points;
 
@@ -80,16 +67,6 @@ public class ComplexPlane {
 
         public ComplexPlaneBuilder step(double step) {
             this.step = step;
-            return this;
-        }
-
-        public ComplexPlaneBuilder raidus(int radius) {
-            this.radius = radius;
-            return this;
-        }
-
-        public ComplexPlaneBuilder maxIter(long maxIter) {
-            this.maxIter =maxIter;
             return this;
         }
 
@@ -124,8 +101,6 @@ public class ComplexPlane {
                 "maxX=" + maxX +
                 ", maxY=" + maxY +
                 ", step=" + step +
-                ", radius=" + radius +
-                ", maxIter=" + maxIter +
                 '}';
     }
 }

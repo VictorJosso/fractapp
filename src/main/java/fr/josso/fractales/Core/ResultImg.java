@@ -1,9 +1,11 @@
 package fr.josso.fractales.Core;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ResultImg {
 
@@ -16,25 +18,23 @@ public class ResultImg {
     BufferedImage img;
     File f = new File("MyFractal.png");
 
-    public ResultImg (int maxX, int minX, int maxY, int minY, double step, int scale, Complex origin) {
-        int width = (int) ((maxX - minX) / step);
-        int height = (int) ((maxY - minY) /step);
 
-        this.yShift = (int) - (origin.getImaginaryPart() * scale) ;
-        this.xShift = (int) - (origin.getRealPart() * scale);
-
-        System.out.println(yShift);
-        System.out.println(xShift);
-
+    public ResultImg(int width, int height){
         this.img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     }
 
-    public void writeInImg(double x, double y, int scale, int ind, long max_iter) {
-        int px = (int) (x * scale) + this.xShift;
-        int py = (int) (y * scale) + this.yShift;
-        //System.out.println(" x, y : " + x + ", " + y + " et px, py : " + px + ", " + py);
+    public void setPixel(int x, int y, int color){
+        this.img.setRGB(x, y, color);
+    }
 
-        img.setRGB(px, py, (int) ((col * ind) / max_iter));
+    public static ResultImg fromMatrix(ArrayList<ArrayList<Float>> matrix){
+        ResultImg img = new ResultImg(matrix.get(0).size(), matrix.size());
+        for(int y = 0; y < matrix.size(); y++){
+            for(int x = 0; x < matrix.get(y).size(); x++){
+                img.setPixel(x, y, Color.HSBtoRGB(matrix.get(y).get(x), 0.7f, 0.7f));
+            }
+        }
+        return img;
     }
 
     public void endTask() {
