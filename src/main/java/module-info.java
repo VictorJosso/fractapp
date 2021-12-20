@@ -4,6 +4,7 @@ module fr.josso.fractales {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
+    requires java.desktop;
 
     opens fr.josso.fractales to javafx.fxml;
     exports fr.josso.fractales;
