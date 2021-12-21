@@ -28,12 +28,16 @@ public class ResultImg {
     }
 
     public static ResultImg fromMatrix(ArrayList<ArrayList<Float>> matrix){
-        ResultImg img = new ResultImg(matrix.get(0).size(), matrix.size());
-        for(int y = 0; y < matrix.size(); y++){
-            for(int x = 0; x < matrix.get(y).size(); x++){
-                img.setPixel(x, y, Color.HSBtoRGB(matrix.get(y).get(x), 0.7f, 0.7f));
+        ResultImg img = new ResultImg(matrix.size(), matrix.get(0).size());
+        for(int x = 0; x < matrix.size(); x++){
+            for(int y = 0; y < matrix.get(x).size(); y++){
+                img.setPixel(x, y, Color.HSBtoRGB(matrix.get(x).get(y), 0.7f, 0.7f));
             }
         }
+        return img;
+    }
+
+    public BufferedImage getImage() {
         return img;
     }
 

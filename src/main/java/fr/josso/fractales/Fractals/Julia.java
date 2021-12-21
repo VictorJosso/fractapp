@@ -22,9 +22,9 @@ public class Julia {
         this.radius = radius;
         this.plane = plane;
         this.results_matrix = new ArrayList<>();
-        for (int x = 0; x < this.plane.getPoints().size(); x++){
+        for (int x = 0; x < this.plane.getNbPointsX(); x++){
             this.results_matrix.add(new ArrayList<>());
-            for (int y = 0; y < this.plane.getPoints().get(x).size(); y++){
+            for (int y = 0; y < this.plane.getNbPointsY(); y++){
                 this.results_matrix.get(x).add(0.f);
             }
         }
@@ -45,9 +45,10 @@ public class Julia {
     }
 
     public ResultImg compute(){
-        IntStream.range(0, this.plane.getPoints().size()).parallel().forEach(
-                x -> IntStream.range(0, this.plane.getPoints().get(x).size()).parallel().forEach(
-                        y -> this.saveResult(x, y, (float) this.divergenceIndex(this.plane.getPoints().get(x).get(y)) / maxIter)
+        int scale = (int) (1/this.plane.getStep());
+        IntStream.range(0, this.plane.getNbPointsX()).parallel().forEach(
+                x -> IntStream.range(0, this.plane.getNbPointsY()).parallel().forEach(
+                        y -> this.saveResult(x, y, (float) this.divergenceIndex(new Complex((double) this.plane.getMinX() + x * this.plane.getStep(), (double) this.plane.getMinY() + y * this.plane.getStep())) / maxIter)
                 )
         );
 

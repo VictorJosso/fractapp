@@ -5,10 +5,10 @@ import java.util.function.UnaryOperator;
 
 
 public class ComplexPlane {
-    private final int maxX;
-    private final int maxY;
-    private final int minX;
-    private final int minY;
+    private final float maxX;
+    private final float maxY;
+    private final float minX;
+    private final float minY;
     private final double step;
     private final int scale;
     private final ArrayList<ArrayList<Complex>> points;
@@ -22,7 +22,7 @@ public class ComplexPlane {
         this.minY = builder.minY;
         this.step = builder.step;
         this.points = builder.points;
-        this.scale = builder.scale;
+        this.scale = (int) (1/builder.step);
     }
 
     public static ComplexPlaneBuilder builder() {
@@ -33,34 +33,64 @@ public class ComplexPlane {
         return points;
     }
 
+    public double getStep() {
+        return step;
+    }
 
+    public float getMaxX() {
+        return maxX;
+    }
+
+    public float getMaxY() {
+        return maxY;
+    }
+
+    public float getMinX() {
+        return minX;
+    }
+
+    public float getMinY() {
+        return minY;
+    }
+
+    public int getScale() {
+        return scale;
+    }
+
+    public int getNbPointsX(){
+        return (int) (this.getScale() * (this.maxX - this.minX));
+    }
+
+    public int getNbPointsY(){
+        return (int) (this.getScale() * (this.maxY - this.minY));
+    }
 
     public static class ComplexPlaneBuilder {
-        private int maxX = 1;
-        private int maxY = 1;
-        private int minX = -1;
-        private int minY = -1;
+        private float maxX = 1;
+        private float maxY = 1;
+        private float minX = -1;
+        private float minY = -1;
         private double step = 0.01;
         private int scale;
         private ArrayList<ArrayList<Complex>> points;
 
 
-        public ComplexPlaneBuilder maxX(int maxX) {
+        public ComplexPlaneBuilder maxX(float maxX) {
             this.maxX = maxX;
             return this;
         }
 
-        public ComplexPlaneBuilder minX(int minX) {
+        public ComplexPlaneBuilder minX(float minX) {
             this.minX = minX;
             return this;
         }
 
-        public ComplexPlaneBuilder maxY(int maxY) {
+        public ComplexPlaneBuilder maxY(float maxY) {
             this.maxY = maxY;
             return this;
         }
 
-        public ComplexPlaneBuilder minY(int minY) {
+        public ComplexPlaneBuilder minY(float minY) {
             this.minY = minY;
             return this;
         }
@@ -76,9 +106,9 @@ public class ComplexPlane {
             int cmpt = 0;
 
             ArrayList<ArrayList<Complex>> res = new ArrayList<>();
-            for (int y = minY * scale; y < maxY * this.scale; y += step * this.scale) {
+            for (float y = minY * scale; y < maxY * this.scale; y += step * this.scale) {
                 ArrayList<Complex> line = new ArrayList<>();
-                for (int x = minX * scale; x < maxX * this.scale; x += step * this.scale) {
+                for (float x = minX * scale; x < maxX * this.scale; x += step * this.scale) {
                     line.add(new Complex((double) x / this.scale, (double) y / this.scale));
                     cmpt++;
                 }
@@ -89,7 +119,7 @@ public class ComplexPlane {
         }
 
         public ComplexPlane build() {
-            this.points = genPoints();
+            //this.points = genPoints();
             return new ComplexPlane(this);
         }
 
