@@ -5,7 +5,6 @@ import fr.josso.fractales.Core.ComplexPlane;
 import fr.josso.fractales.Core.ResultImg;
 import fr.josso.fractales.Fractals.Julia;
 import fr.josso.fractales.Graphics.HelloApplication;
-import fr.josso.fractales.Graphics.PlutoExplorer;
 import javafx.application.Application;
 
 

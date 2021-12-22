@@ -6,39 +6,36 @@ import fr.josso.fractales.Core.Progress;
 import fr.josso.fractales.Core.ResultImg;
 import javafx.concurrent.Task;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 
 public class Julia extends Task<ResultImg>{
     private final UnaryOperator<Complex> f;
-    private final int maxIter;
-    private final int radius;
+    private final long maxIter;
+    private final BigInteger radius;
     private final ComplexPlane plane;
     private final ArrayList<ArrayList<Float>> results_matrix;
 
     private Progress progress;
 
 
-    public Julia(UnaryOperator<Complex> f, int maxIter, int radius, ComplexPlane plane) {
+    public Julia(UnaryOperator<Complex> f, long maxIter, BigInteger radius, ComplexPlane plane) {
         this.f = f;
         this.maxIter = maxIter;
         this.radius = radius;
         this.plane = plane;
         this.results_matrix = new ArrayList<>();
-        for (int x = 0; x < this.plane.getNbPointsX(); x++){
-            this.results_matrix.add(new ArrayList<>());
-            for (int y = 0; y < this.plane.getNbPointsY(); y++){
-                this.results_matrix.get(x).add(-1.f);
-            }
-        }
         this.progress = new Progress(plane.getNbPointsX() * plane.getNbPointsY());
     }
 
     private int divergenceIndex(Complex z){
         int iterations = 0;
         Complex zn = z;
-        while (iterations < this.maxIter-1 && zn.modulus() < this.radius){
+        while (iterations < this.maxIter - 1 && BigDecimal.valueOf((long) zn.modulus()).compareTo(new BigDecimal(this.radius)) < 0){
             zn = f.apply(zn);
             iterations++;
         }
@@ -49,8 +46,15 @@ public class Julia extends Task<ResultImg>{
         this.results_matrix.get(x).set(y, result);
     }
 
+    private void initResultMatrix(){
+        for (int x = 0; x < this.plane.getNbPointsX(); x++){
+            this.results_matrix.add(new ArrayList<>(Collections.nCopies(this.plane.getNbPointsY(), -1.f)));
+        }
+    }
+
 
     public ResultImg compute(){
+        this.initResultMatrix();
         IntStream.range(0, this.plane.getNbPointsX()).parallel().forEach(
                 x -> IntStream.range(0, this.plane.getNbPointsY()).parallel().forEach(
                         y -> {this.saveResult(x, y, (float) this.divergenceIndex(new Complex((double) this.plane.getMinX() + x * this.plane.getStep(), (double) this.plane.getMinY() + y * this.plane.getStep())) / maxIter);
