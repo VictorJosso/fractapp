@@ -2,6 +2,7 @@ package fr.josso.fractales.Graphics;
 
 import fr.josso.fractales.Core.Complex;
 import fr.josso.fractales.Core.ComplexPlane;
+import fr.josso.fractales.Core.Parser;
 import fr.josso.fractales.Core.ResultImg;
 import fr.josso.fractales.Fractals.Julia;
 import javafx.application.Platform;
@@ -17,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.math.BigInteger;
+import java.util.function.UnaryOperator;
 
 public class HelloController {
     enum FRACTAL{
@@ -86,6 +88,10 @@ public class HelloController {
     }
 
     private void generateJulia(){
+
+        Parser parser = new Parser(functionTextField.getText());
+        UnaryOperator<Complex> equation = parser.toFunction();
+
         float minX = Float.parseFloat(minXTextField.getText());
         float maxX = Float.parseFloat(maxXTextField.getText());
         float minY = Float.parseFloat(minYTextField.getText());
@@ -102,7 +108,7 @@ public class HelloController {
                 .maxY(maxY)
                 .step(step)
                 .build();
-        Julia julia = new Julia(z -> Complex.add(z.pow(2), new Complex(0.285, 0.01)), maxIter, radius, plane);
+        Julia julia = new Julia(equation, maxIter, radius, plane);
 
 
         this.progressBar.setDisable(false);

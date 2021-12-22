@@ -5,7 +5,7 @@ import java.util.function.UnaryOperator;
 
 public class Parser {
 
-    private String input;
+    private final String input;
 
     public Parser(String input) {
         this.input = input.trim();
