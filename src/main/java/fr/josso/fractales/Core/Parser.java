@@ -1,14 +1,17 @@
 package fr.josso.fractales.Core;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.function.UnaryOperator;
 
 public class Parser {
 
     private final String input;
+    private HashMap<Integer, Complex> coefficients;
 
     public Parser(String input) {
         this.input = input.trim();
+        this.setHashMap();
     }
 
     private char[] formate(char[] init, int length) {
@@ -24,8 +27,6 @@ public class Parser {
         char[] temp = new char[64];
 
         while (i < input.length()) {
-
-
             if (input.charAt(i) == 'z') {
                 char[] exponentTemp = new char[16];
                 i += 2;
@@ -85,15 +86,24 @@ public class Parser {
         return Complex.multiply(res, new Complex(signe, 0));
     }
 
-    public UnaryOperator<Complex> toFunction(){
+    private void setHashMap() {
+        HashMap<Integer, Complex> res = new HashMap<>();
         HashMap<Integer, String> steps = this.parsePow();
+        Set<Integer> keys = steps.keySet();
+
+        for (Integer key : keys) {
+            res.put(key, readCoefficent(steps.get(key)));
+        }
+        this.coefficients = res;
+    }
+
+    public UnaryOperator<Complex> toFunction(){
         return complex -> {
             Complex res = new Complex(0, 0);
-            for (Integer key : steps.keySet()) {
-                res = Complex.add(res, Complex.multiply(complex.pow(key), readCoefficent(steps.get(key))));
+            for (Integer key : this.coefficients.keySet()) {
+                res = Complex.add(res, Complex.multiply(complex.pow(key), coefficients.get(key)));
             }
             return res;
         };
     }
-
 }
