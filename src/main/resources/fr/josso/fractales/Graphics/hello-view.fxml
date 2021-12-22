@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -23,16 +24,19 @@
    <children>
       <AnchorPane>
          <children>
-            <VBox cacheShape="false" prefHeight="800.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0">
+            <VBox alignment="TOP_CENTER" cacheShape="false" prefHeight="800.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0">
                <children>
-                  <MenuButton fx:id="choixMenuButton" mnemonicParsing="false" text="Fractale">
+                  <MenuButton fx:id="choixMenuButton" alignment="CENTER" mnemonicParsing="false" text="Fractale">
                     <items>
                       <MenuItem fx:id="menuItemJulia" mnemonicParsing="false" onAction="#setJuliaFractal" text="Julia">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="J" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
                         </MenuItem>
-                      <MenuItem fx:id="menuItemMandelbrot" mnemonicParsing="false" onAction="#setMandelBrotFractal" text="Mandelbrot" />
+                      <MenuItem fx:id="menuItemMandelbrot" mnemonicParsing="false" onAction="#setMandelBrotFractal" text="Mandelbrot">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
                     </items>
                      <VBox.margin>
                         <Insets left="5.0" top="5.0" />
@@ -99,6 +103,19 @@
                         <Insets left="5.0" right="5.0" top="20.0" />
                      </VBox.margin>
                   </GridPane>
+                  <HBox>
+                     <VBox.margin>
+                        <Insets left="5.0" right="5.0" top="30.0" />
+                     </VBox.margin>
+                     <children>
+                        <Label fx:id="progressionLabel" text="Progression">
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ProgressBar fx:id="progressBar" disable="true" prefWidth="200.0" progress="0.0" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
             <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">

@@ -8,14 +8,8 @@ import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.awt.image.BufferedImage;
 
 public class HelloController {
     enum FRACTAL{
@@ -67,6 +61,12 @@ public class HelloController {
     @FXML
     private ImageView resultImageView;
 
+    @FXML
+    private ProgressBar progressBar;
+
+    @FXML
+    private Label progressionLabel;
+
 
 
     private FRACTAL currentFractal = FRACTAL.JULIA;
@@ -94,12 +94,15 @@ public class HelloController {
                 .build();
         Julia julia = new Julia(z -> Complex.add(z.pow(2), new Complex(-0.7269, 0.1889)), maxIter, radius, plane);
 
+
+        this.progressBar.setDisable(false);
+        this.progressBar.progressProperty().bind(julia.progressProperty());
         new Thread(() -> {
             ResultImg resultImg = julia.compute();
-
             Image image = SwingFXUtils.toFXImage(resultImg.getImage(), null);
-            resultImg.endTask();
-            Platform.runLater(() -> resultImageView.setImage(image));
+            Platform.runLater(() -> {resultImageView.setImage(image);
+                this.progressBar.setDisable(true);
+                this.progressBar.progressProperty().unbind();});
         }).start();
 
 
@@ -110,6 +113,7 @@ public class HelloController {
     private void onButtonGeneratePressed(){
         if (this.currentFractal == FRACTAL.JULIA){
             this.generateJulia();
+
         }
     }
 
