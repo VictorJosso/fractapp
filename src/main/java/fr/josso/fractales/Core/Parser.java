@@ -21,7 +21,7 @@ public class Parser {
         HashMap<Integer, String> res = new HashMap<>();
         int i = 0;
         int k = 0;
-        char[] temp = new char[32];
+        char[] temp = new char[64];
 
         while (i < input.length()) {
 
@@ -38,7 +38,7 @@ public class Parser {
 
                 res.put(Integer.parseInt(new String(formate(exponentTemp, j))), new String(formate(temp, k)));
                 k = 0;
-                temp = new char[32];
+                temp = new char[64];
             } else {
                 temp[k] = input.charAt(i);
                 k++;
