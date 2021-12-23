@@ -97,13 +97,17 @@ public class Parser {
         this.coefficients = res;
     }
 
+    private UnaryOperator<Complex> buildFunctionForExposant(int n, UnaryOperator<Complex> func){
+        Complex coeff = coefficients.get(n);
+        return z -> Complex.add(func.apply(z), Complex.multiply(z.pow(n), coeff));
+    }
+
     public UnaryOperator<Complex> toFunction(){
-        return complex -> {
-            Complex res = new Complex(0, 0);
-            for (Integer key : this.coefficients.keySet()) {
-                res = Complex.add(res, Complex.multiply(complex.pow(key), coefficients.get(key)));
-            }
-            return res;
-        };
+
+        UnaryOperator<Complex> result = z -> new Complex(0, 0);
+        for(Integer key : this.coefficients.keySet()){
+            result = this.buildFunctionForExposant(key, result);
+        }
+        return result;
     }
 }
