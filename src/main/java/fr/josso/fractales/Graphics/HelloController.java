@@ -2,6 +2,7 @@ package fr.josso.fractales.Graphics;
 
 import fr.josso.fractales.Core.*;
 import fr.josso.fractales.Fractals.Julia;
+import fr.josso.fractales.Fractals.Mandelbrot;
 import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -94,6 +95,8 @@ public class HelloController {
         maxIterationsTextField.textProperty().addListener(new RegexValidator(Pattern.compile("(\\d*)+"), Pattern.compile("\\d+"), maxIterationsTextField));
     }
 
+
+
     private void generateJulia(){
 
         Parser parser = new Parser(functionTextField.getText());
@@ -131,11 +134,47 @@ public class HelloController {
     }
 
 
+    private void generateMandelbrot() {
+
+        float minX = Float.parseFloat(minXTextField.getText());
+        float maxX = Float.parseFloat(maxXTextField.getText());
+        float minY = Float.parseFloat(minYTextField.getText());
+        float maxY = Float.parseFloat(maxYTextField.getText());
+        double step = Double.parseDouble(stepTextField.getText());
+
+        BigInteger radius = new BigInteger(radiusTextField.getText());
+        long maxIter = Long.parseLong(maxIterationsTextField.getText());
+
+        ComplexPlane plane = ComplexPlane.builder()
+                .minX(minX)
+                .maxX(maxX)
+                .minY(minY)
+                .maxY(maxY)
+                .step(step)
+                .build();
+        Mandelbrot mandelbrot = new Mandelbrot(z->z, maxIter, radius, plane);
+
+        this.progressBar.setDisable(false);
+        this.progressBar.progressProperty().bind(mandelbrot.progressProperty());
+        new Thread(() -> {
+            ResultImg resultImg = mandelbrot.compute();
+            Image image = SwingFXUtils.toFXImage(resultImg.getImage(), null);
+            Platform.runLater(() -> {
+                ImageHelper.displayImage(image, resultImageView, containerPane);
+                this.progressBar.setDisable(true);
+                this.progressBar.progressProperty().unbind();});
+        }).start();
+
+    }
+
     @FXML
     private void onButtonGeneratePressed(){
         if (this.currentFractal == FRACTAL.JULIA){
             this.generateJulia();
-
+        } else {
+            if (this.currentFractal == FRACTAL.MANDELBROT){
+                this.generateMandelbrot();
+            }
         }
     }
 

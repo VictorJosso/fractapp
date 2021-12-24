@@ -31,12 +31,11 @@ public class Parser {
                 char[] exponentTemp = new char[16];
                 i += 2;
                 int j = 0;
-                while(' ' != input.charAt(i)) {
+                while(i < input.length() && ' ' != input.charAt(i) ) {
                     exponentTemp[j] = input.charAt(i);
                     i++;
                     j++;
                 }
-
                 res.put(Integer.parseInt(new String(formate(exponentTemp, j))), new String(formate(temp, k)));
                 k = 0;
                 temp = new char[64];
@@ -53,6 +52,9 @@ public class Parser {
 
 
     public Complex readCoefficent(String coef){
+
+        if (coef.isEmpty()) return new Complex(1,0);
+
         int signe = 1;
         String[] parsed;
         if (coef.charAt(0) == '-') {

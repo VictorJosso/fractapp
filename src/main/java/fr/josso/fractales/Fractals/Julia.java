@@ -15,8 +15,8 @@ import java.util.stream.IntStream;
 
 public class Julia extends Task<ResultImg>{
     private final UnaryOperator<Complex> f;
-    private final long maxIter;
-    private final BigInteger radius;
+    final long maxIter;
+    final BigInteger radius;
     private final ComplexPlane plane;
     private final ArrayList<ArrayList<Float>> results_matrix;
 
@@ -32,7 +32,8 @@ public class Julia extends Task<ResultImg>{
         this.progress = new Progress(plane.getNbPointsX() * plane.getNbPointsY());
     }
 
-    private int divergenceIndex(Complex z){
+
+    int divergenceIndex(Complex z){
         int iterations = 0;
         Complex zn = z;
         while (iterations < this.maxIter - 1 && BigDecimal.valueOf((long) zn.modulus()).compareTo(new BigDecimal(this.radius)) < 0){
@@ -54,6 +55,7 @@ public class Julia extends Task<ResultImg>{
 
 
     public ResultImg compute(){
+        int scale = (int) Math.pow(10, Double.toString(this.plane.getStep()).length() - 2);
         this.initResultMatrix();
         IntStream.range(0, this.plane.getNbPointsX()).parallel().forEach(
                 x -> IntStream.range(0, this.plane.getNbPointsY()).parallel().forEach(
