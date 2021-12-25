@@ -1,12 +1,10 @@
 package fr.josso.fractales.Graphics;
 
 import fr.josso.fractales.Core.*;
+import fr.josso.fractales.Fractals.BaseFractal;
 import fr.josso.fractales.Fractals.Julia;
 import fr.josso.fractales.Fractals.Mandelbrot;
 import javafx.application.Platform;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -15,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.math.BigInteger;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -96,9 +95,7 @@ public class HelloController {
     }
 
 
-
-    private void generateJulia(){
-
+    private FractalParams getParams() {
         Parser parser = new Parser(functionTextField.getText());
         UnaryOperator<Complex> equation = parser.toFunction();
 
@@ -111,60 +108,82 @@ public class HelloController {
         BigInteger radius = new BigInteger(radiusTextField.getText());
         long maxIter = Long.parseLong(maxIterationsTextField.getText());
 
-        ComplexPlane plane = ComplexPlane.builder()
-                .minX(minX)
-                .maxX(maxX)
-                .minY(minY)
-                .maxY(maxY)
-                .step(step)
-                .build();
-        Julia julia = new Julia(equation, maxIter, radius, plane);
+        return new FractalParams(
+                minX,
+                maxX,
+                minY,
+                maxY,
+                step,
+                radius,
+                maxIter,
+                equation
+        );
+    }
 
-
+    private void startFractal(BaseFractal baseFractal, boolean shouldDisplayImage){
         this.progressBar.setDisable(false);
-        this.progressBar.progressProperty().bind(julia.progressProperty());
+        this.progressBar.progressProperty().bind(baseFractal.progressProperty());
         new Thread(() -> {
-            ResultImg resultImg = julia.compute();
-            Image image = SwingFXUtils.toFXImage(resultImg.getImage(), null);
-            Platform.runLater(() -> {
-                ImageHelper.displayImage(image, resultImageView, containerPane);
-                this.progressBar.setDisable(true);
-                this.progressBar.progressProperty().unbind();});
+            ResultImg resultImg = baseFractal.compute();
+            if (shouldDisplayImage) {
+                Image image = SwingFXUtils.toFXImage(resultImg.getImage(), null);
+                Platform.runLater(() -> {
+                    ImageHelper.displayImage(image, resultImageView, containerPane);
+                    this.progressBar.setDisable(true);
+                    this.progressBar.progressProperty().unbind();
+                });
+            } else {
+                resultImg.endTask();
+                Platform.runLater(() -> {
+                    this.progressBar.setDisable(true);
+                    this.progressBar.progressProperty().unbind();
+                });
+            }
         }).start();
+
+    }
+
+    private void warnIfTooBig(BaseFractal fractale){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Attention, image trop grande");
+        alert.setHeaderText("Votre fractale peut faire planter l'application");
+        alert.setContentText("Les paramètres d'affichage donnent une image de plus de 50 millions de pixels. " +
+                "Une image aussi grande risque de provoquer une erreur lors de son affichage car JavaFX doit charger chaque " +
+                "pixel en mémoire. Il est recommandé d'enregistrer cette fractale sans l'afficher à l'écran.");
+
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Enregistrer l'image");
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL)).setText("Afficher l'image");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isEmpty()){
+            this.warnIfTooBig(fractale);
+        } else {
+            this.startFractal(fractale, result.get() == ButtonType.CANCEL);
+        }
+    }
+
+    private void generateJulia(){
+
+        FractalParams params = getParams();
+        Julia julia = Julia.fromParams(params);
+
+        if ((params.maxX() - params.minX()) * (1/params.step()) * (params.maxY() - params.minY()) * (1/params.step()) > 50000000){
+            this.warnIfTooBig(julia);
+        } else {
+            this.startFractal(julia, true);
+        }
     }
 
 
     private void generateMandelbrot() {
+        FractalParams params = getParams();
+        Mandelbrot mandelbrot = Mandelbrot.fromParams(params);
 
-        float minX = Float.parseFloat(minXTextField.getText());
-        float maxX = Float.parseFloat(maxXTextField.getText());
-        float minY = Float.parseFloat(minYTextField.getText());
-        float maxY = Float.parseFloat(maxYTextField.getText());
-        double step = Double.parseDouble(stepTextField.getText());
-
-        BigInteger radius = new BigInteger(radiusTextField.getText());
-        long maxIter = Long.parseLong(maxIterationsTextField.getText());
-
-        ComplexPlane plane = ComplexPlane.builder()
-                .minX(minX)
-                .maxX(maxX)
-                .minY(minY)
-                .maxY(maxY)
-                .step(step)
-                .build();
-        Mandelbrot mandelbrot = new Mandelbrot(z->z, maxIter, radius, plane);
-
-        this.progressBar.setDisable(false);
-        this.progressBar.progressProperty().bind(mandelbrot.progressProperty());
-        new Thread(() -> {
-            ResultImg resultImg = mandelbrot.compute();
-            Image image = SwingFXUtils.toFXImage(resultImg.getImage(), null);
-            Platform.runLater(() -> {
-                ImageHelper.displayImage(image, resultImageView, containerPane);
-                this.progressBar.setDisable(true);
-                this.progressBar.progressProperty().unbind();});
-        }).start();
-
+        if ((params.maxX() - params.minX()) * (1/params.step()) * (params.maxY() - params.minY()) * (1/params.step()) > 50000000){
+            this.warnIfTooBig(mandelbrot);
+        } else {
+            this.startFractal(mandelbrot, true);
+        }
     }
 
     @FXML
@@ -182,11 +201,13 @@ public class HelloController {
     private void setJuliaFractal(){
         this.currentFractal = FRACTAL.JULIA;
         this.titleLabel.setText("Julia");
+        this.functionTextField.setDisable(false);
     }
 
     @FXML
     private void setMandelBrotFractal(){
         this.currentFractal = FRACTAL.MANDELBROT;
         this.titleLabel.setText("Mandelbrot");
+        this.functionTextField.setDisable(true);
     }
 }

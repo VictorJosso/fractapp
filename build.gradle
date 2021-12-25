@@ -36,7 +36,7 @@ javafx {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'com.example.demo.Main'
+                'Main-Class': 'fr.josso.fractales.Main'
         )
     }
 }
