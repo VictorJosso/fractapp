@@ -31,7 +31,7 @@ public class Parser {
                 char[] exponentTemp = new char[16];
                 i += 2;
                 int j = 0;
-                while(i < input.length() && ' ' != input.charAt(i) ) {
+                while(i < input.length() && isDigit(input.charAt(i))) {
                     exponentTemp[j] = input.charAt(i);
                     i++;
                     j++;
@@ -53,6 +53,7 @@ public class Parser {
 
     public Complex readCoefficent(String coef){
 
+
         if (coef.isEmpty()) return new Complex(1,0);
 
         int signe = 1;
@@ -62,9 +63,16 @@ public class Parser {
         }
 
         if (coef.charAt(0) != '+' && coef.charAt(0) != '-') {
-            parsed = coef.replaceAll("[()]", "").split(" [+-] ");
+            parsed = coef
+                    .replaceAll("[-]", "-")
+                    .replaceAll("[()]", "")
+                    .split(" [+-] ");
         } else {
-            parsed = coef.substring(2).replaceAll("[()]", "").split(" [+-] ");
+            parsed = coef
+                    .substring(2)
+                    .replaceAll("[-]", "-")
+                    .replaceAll("[()]", "")
+                    .split(" [+-] ");
         }
 
         if(parsed.length < 2) {
@@ -111,5 +119,9 @@ public class Parser {
             result = this.buildFunctionForExposant(key, result);
         }
         return result;
+    }
+
+    private boolean isDigit(char c) {
+        return c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c =='9';
     }
 }

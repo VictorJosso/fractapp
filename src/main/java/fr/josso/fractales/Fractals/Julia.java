@@ -11,6 +11,11 @@ public class Julia extends BaseFractal{
         super(f, maxIter, radius, plane, true);
     }
 
+    public Julia(UnaryOperator<Complex> f, long maxIter, BigInteger radius, ComplexPlane plane, boolean isui) {
+        super(f, maxIter, radius, plane, isui);
+    }
+
+
     public static Julia fromParams(FractalParams params) {
         ComplexPlane plane = ComplexPlane.builder()
                 .minX(params.minX())

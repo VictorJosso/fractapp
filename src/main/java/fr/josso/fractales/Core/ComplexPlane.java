@@ -12,7 +12,6 @@ public class ComplexPlane {
     private final double step;
     private final int scale;
     private final ArrayList<ArrayList<Complex>> points;
-    ResultImg img;
 
 
     private ComplexPlane(ComplexPlaneBuilder builder) {

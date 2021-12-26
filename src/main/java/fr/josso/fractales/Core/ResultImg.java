@@ -10,9 +10,6 @@ import java.io.IOException;
 
 public class ResultImg {
 
-    int yShift;
-    int xShift;
-
     int r = 64; int g = 224; int b = 208; //turquoise
     int col = (r << 16) | (g << 8) | b;
 
@@ -44,6 +41,7 @@ public class ResultImg {
 
     public void endTask() {
         try {
+            System.out.println("Done !");
             ImageIO.write(img, "PNG", f);
         } catch (IOException e) {
             e.printStackTrace();

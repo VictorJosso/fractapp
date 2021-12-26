@@ -31,7 +31,6 @@ public class Mandelbrot extends BaseFractal {
         return new Mandelbrot(z->z, params.maxIter(), params.radius(), plane);
     }
 
-
     @Override
     public int divergenceIndex(Complex z) {
         UnaryOperator<Complex> fun = complex -> Complex.add(complex.pow(2), z);
