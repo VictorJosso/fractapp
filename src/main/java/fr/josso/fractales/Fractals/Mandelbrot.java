@@ -11,7 +11,12 @@ import java.util.function.UnaryOperator;
 public class Mandelbrot extends BaseFractal {
 
     public Mandelbrot(UnaryOperator<Complex> f, long maxIter, BigInteger radius, ComplexPlane plane) {
-        super(f, maxIter, radius, plane);
+        super(f, maxIter, radius, plane, true);
+
+    }
+
+    public Mandelbrot(UnaryOperator<Complex> f, long maxIter, BigInteger radius, ComplexPlane plane, boolean isui) {
+        super(f, maxIter, radius, plane, isui);
 
     }
 

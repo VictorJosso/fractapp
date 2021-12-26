@@ -15,15 +15,18 @@ public abstract class BaseFractal extends Task<ResultImg> {
     //private final ArrayList<ArrayList<Float>> results_matrix;
     private float[][] results_matrix;
 
+    private final boolean isui;
+
     private Progress progress;
 
-    public BaseFractal(UnaryOperator<Complex> f, long maxIter, BigInteger radius, ComplexPlane plane) {
+    public BaseFractal(UnaryOperator<Complex> f, long maxIter, BigInteger radius, ComplexPlane plane, boolean isui) {
         this.f = f;
         this.maxIter = maxIter;
         this.radius = radius;
         this.plane = plane;
         this.results_matrix = new float[plane.getNbPointsX()][plane.getNbPointsY()];
         this.progress = new Progress(plane.getNbPointsX() * plane.getNbPointsY());
+        this.isui = isui;
     }
 
     protected abstract int divergenceIndex(Complex z);
@@ -42,8 +45,9 @@ public abstract class BaseFractal extends Task<ResultImg> {
                 x -> IntStream.range(0, this.plane.getNbPointsY()).parallel().forEach(
                         y -> {this.saveResult(x, y, (float) this.divergenceIndex(new Complex((double) this.plane.getMinX() + x * this.plane.getStep(), (double) this.plane.getMinY() + y * this.plane.getStep())) / maxIter);
                             this.progress.operationDone();
+                            if (this.isui){
                             this.updateProgress(this.progress.getDone(), this.progress.getTotalOperations());
-                            this.updateMessage(String.valueOf(this.progress.getProgression()));}
+                            this.updateMessage(String.valueOf(this.progress.getProgression()));}}
                 )
         );
 
