@@ -8,7 +8,7 @@ import java.util.function.UnaryOperator;
 public class Julia extends BaseFractal{
 
     public Julia(UnaryOperator<Complex> f, long maxIter, BigInteger radius, ComplexPlane plane) {
-        super(f, maxIter, radius, plane);
+        super(f, maxIter, radius, plane, true);
     }
 
     public static Julia fromParams(FractalParams params) {

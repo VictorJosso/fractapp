@@ -7,18 +7,20 @@ import fr.josso.fractales.Fractals.Julia;
 import fr.josso.fractales.Fractals.Mandelbrot;
 import fr.josso.fractales.Graphics.HelloApplication;
 import javafx.application.Application;
+import javafx.application.Platform;
 
 import java.math.BigInteger;
 
 
 public class Main {
     public static void main(String[] args) {
+        //Platform.startup(() -> {});
         ComplexPlane test = ComplexPlane.builder()
                 .maxY(1)
                 .maxX(0.5F)
                 .minX(-2.5F)
                 .minY(-1)
-                .step(0.0000000001)
+                .step(0.00005)
                 .build();
         //test.trace(z -> Complex.add(z.pow(2), new Complex(-0.7269, 0.1889)));
         //test.trace(z -> z)
@@ -27,7 +29,7 @@ public class Main {
         //ResultImg resultImg = juliaTest.compute();
         //resultImg.endTask();
 
-        Mandelbrot mandelbrot = new Mandelbrot(z->z, 1000, BigInteger.valueOf(2), test);
+        Mandelbrot mandelbrot = new Mandelbrot(z->z, 1000, BigInteger.valueOf(2), test, false);
         ResultImg resultImg = mandelbrot.compute();
         resultImg.endTask();
 
