@@ -7,6 +7,7 @@ module fr.josso.fractales {
     requires org.kordamp.bootstrapfx.core;
     requires java.desktop;
     requires java.logging;
+    requires commons.cli;
 
     opens fr.josso.fractales to javafx.fxml;
     exports fr.josso.fractales;
