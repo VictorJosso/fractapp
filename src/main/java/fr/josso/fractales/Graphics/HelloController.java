@@ -11,7 +11,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -76,7 +79,14 @@ public class HelloController {
     @FXML
     private Pane containerPane;
 
+    @FXML
+    private Button saveButton;
+
+    private Stage mainStage;
+
     private FRACTAL currentFractal = FRACTAL.JULIA;
+    private ResultImg resultImg;
+    private File destinationFile;
 
     public HelloController() {
     }
@@ -94,6 +104,9 @@ public class HelloController {
         maxIterationsTextField.textProperty().addListener(new RegexValidator(Pattern.compile("(\\d*)+"), Pattern.compile("\\d+"), maxIterationsTextField));
     }
 
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
+    }
 
     private FractalParams getParams() {
         Parser parser = new Parser(functionTextField.getText());
@@ -122,18 +135,20 @@ public class HelloController {
 
     private void startFractal(BaseFractal baseFractal, boolean shouldDisplayImage){
         this.progressBar.setDisable(false);
+        this.saveButton.setDisable(true);
         this.progressBar.progressProperty().bind(baseFractal.progressProperty());
         new Thread(() -> {
-            ResultImg resultImg = baseFractal.compute();
+            this.resultImg = baseFractal.compute();
             if (shouldDisplayImage) {
                 Image image = SwingFXUtils.toFXImage(resultImg.getImage(), null);
                 Platform.runLater(() -> {
                     ImageHelper.displayImage(image, resultImageView, containerPane);
                     this.progressBar.setDisable(true);
+                    this.saveButton.setDisable(false);
                     this.progressBar.progressProperty().unbind();
                 });
             } else {
-                resultImg.endTask();
+                resultImg.endTask(this.destinationFile);
                 Platform.runLater(() -> {
                     this.progressBar.setDisable(true);
                     this.progressBar.progressProperty().unbind();
@@ -143,11 +158,30 @@ public class HelloController {
 
     }
 
+    private FileChooser getFileChooser(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer la fractale");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG", "*.png"));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setInitialFileName("MyFractal.png");
+
+        return fileChooser;
+    }
+
+    @FXML
+    private void saveFractal(){
+        FileChooser fileChooser = this.getFileChooser();
+        File file = fileChooser.showSaveDialog(this.mainStage);
+        if (file != null){
+            this.resultImg.endTask(file);
+        }
+    }
+
     private void warnIfTooBig(BaseFractal fractale){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Attention, image trop grande");
         alert.setHeaderText("Votre fractale peut faire planter l'application");
-        alert.setContentText("Les paramètres d'affichage donnent une image de plus de 50 millions de pixels. " +
+        alert.setContentText("Les paramètres d'affichage donnent une image de plus de 100 millions de pixels. " +
                 "Une image aussi grande risque de provoquer une erreur lors de son affichage car JavaFX doit charger chaque " +
                 "pixel en mémoire. Il est recommandé d'enregistrer cette fractale sans l'afficher à l'écran.");
 
@@ -158,6 +192,7 @@ public class HelloController {
         if (result.isEmpty()){
             this.warnIfTooBig(fractale);
         } else {
+            this.destinationFile = this.getFileChooser().showSaveDialog(this.mainStage);
             this.startFractal(fractale, result.get() == ButtonType.CANCEL);
         }
     }
@@ -167,7 +202,7 @@ public class HelloController {
         FractalParams params = getParams();
         Julia julia = Julia.fromParams(params);
 
-        if ((params.maxX() - params.minX()) * (1/params.step()) * (params.maxY() - params.minY()) * (1/params.step()) > 50000000){
+        if ((params.maxX() - params.minX()) * (1/params.step()) * (params.maxY() - params.minY()) * (1/params.step()) > 100000000){
             this.warnIfTooBig(julia);
         } else {
             this.startFractal(julia, true);
@@ -179,7 +214,7 @@ public class HelloController {
         FractalParams params = getParams();
         Mandelbrot mandelbrot = Mandelbrot.fromParams(params);
 
-        if ((params.maxX() - params.minX()) * (1/params.step()) * (params.maxY() - params.minY()) * (1/params.step()) > 50000000){
+        if ((params.maxX() - params.minX()) * (1/params.step()) * (params.maxY() - params.minY()) * (1/params.step()) > 100000000){
             this.warnIfTooBig(mandelbrot);
         } else {
             this.startFractal(mandelbrot, true);

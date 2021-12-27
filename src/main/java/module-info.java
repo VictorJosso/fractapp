@@ -12,5 +12,5 @@ module fr.josso.fractales {
     opens fr.josso.fractales to javafx.fxml;
     exports fr.josso.fractales;
     exports fr.josso.fractales.Graphics;
-    opens fr.josso.fractales.Graphics to javafx.fxml;
+    opens fr.josso.fractales.Graphics to javafx.fxml, javafx.graphics;
 }

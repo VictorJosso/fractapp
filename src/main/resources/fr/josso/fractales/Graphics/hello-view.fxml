@@ -121,6 +121,7 @@
             </VBox>
             <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
               <buttons>
+                  <Button fx:id="saveButton" disable="true" mnemonicParsing="false" onAction="#saveFractal" text="Enregistrer" />
                   <Button fx:id="buttonReset" mnemonicParsing="false" text="Reset" />
                 <Button fx:id="buttonGenerate" mnemonicParsing="false" onAction="#onButtonGeneratePressed" text="Générer" />
               </buttons>

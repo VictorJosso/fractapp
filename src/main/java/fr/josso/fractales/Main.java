@@ -12,14 +12,12 @@ import fr.josso.fractales.cmdLine.cmdLineController;
 import javafx.application.Application;
 import org.apache.commons.cli.CommandLine;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-
-
-        System.out.println(Arrays.toString(args));
         CommandLine commandLine = CommandParser.parse(args);
 
         if (commandLine == null) return;
@@ -34,14 +32,23 @@ public class Main {
         long maxIter = Long.parseLong(commandLine.getOptionValue("maxIter", "1000"));
         BigInteger radius = new BigInteger(commandLine.getOptionValue("radius", "2"));
 
-        BaseFractal fractale;
-        if (commandLine.hasOption("julia")){
-            fractale = new Julia((new Parser(commandLine.getOptionValue("fonction"))).toFunction(), maxIter, radius, plane, false);
-        } else {
-            fractale = new Mandelbrot(z->z, maxIter, radius, plane, false);
-        }
 
-        ResultImg image = fractale.compute();
-        image.endTask();
+        if (commandLine.hasOption("interactif")){
+            Application.launch(HelloApplication.class);
+        } else {
+            BaseFractal fractale;
+            if (commandLine.hasOption("julia")) {
+                fractale = new Julia((new Parser(commandLine.getOptionValue("fonction"))).toFunction(), maxIter, radius, plane, false);
+            } else {
+                fractale = new Mandelbrot(z -> z, maxIter, radius, plane, false);
+            }
+
+            ResultImg image = fractale.compute();
+            if (commandLine.hasOption("output")){
+                image.endTask(new File(commandLine.getOptionValue("output")));
+            } else {
+                image.endTask();
+            }
+        }
     }
 }

@@ -39,6 +39,12 @@ public class ResultImg {
         return img;
     }
 
+
+    public void endTask(File f){
+        this.f = f;
+        this.endTask();
+    }
+
     public void endTask() {
         try {
             System.out.println("Done !");
