@@ -10,15 +10,12 @@ import java.io.IOException;
 
 public class ResultImg {
 
-    int r = 64; int g = 224; int b = 208; //turquoise
-    int col = (r << 16) | (g << 8) | b;
-
-    BigBufferedImage img;
+    BufferedImage img;
     File f = new File("MyFractal.png");
 
 
     public ResultImg(int width, int height){
-        this.img = (BigBufferedImage) BigBufferedImage.create(width, height, BufferedImage.TYPE_INT_RGB);
+        this.img = BigBufferedImage.create(width, height, BufferedImage.TYPE_INT_RGB);
     }
 
     public void setPixel(int x, int y, int color){
@@ -35,7 +32,7 @@ public class ResultImg {
         return img;
     }
 
-    public BigBufferedImage getImage() {
+    public BufferedImage getImage() {
         return img;
     }
 
@@ -47,8 +44,9 @@ public class ResultImg {
 
     public void endTask() {
         try {
-            System.out.println("Done !");
+            System.out.println("Saving file...");
             ImageIO.write(img, "PNG", f);
+            System.out.println("Done !");
         } catch (IOException e) {
             e.printStackTrace();
         }

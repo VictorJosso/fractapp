@@ -8,13 +8,11 @@ import fr.josso.fractales.Fractals.Julia;
 import fr.josso.fractales.Fractals.Mandelbrot;
 import fr.josso.fractales.Graphics.HelloApplication;
 import fr.josso.fractales.cmdLine.CommandParser;
-import fr.josso.fractales.cmdLine.cmdLineController;
 import javafx.application.Application;
 import org.apache.commons.cli.CommandLine;
 
 import java.io.File;
 import java.math.BigInteger;
-import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {

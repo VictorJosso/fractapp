@@ -21,9 +21,10 @@ import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 public class HelloController {
+
     enum FRACTAL{
         JULIA,
-        MANDELBROT;
+        MANDELBROT
     }
     @FXML
     private MenuButton choixMenuButton;
@@ -36,6 +37,9 @@ public class HelloController {
 
     @FXML
     private Button buttonReset;
+
+    @FXML
+    private Label progressionLabel;
 
     @FXML
     private Button buttonGenerate;
@@ -74,13 +78,13 @@ public class HelloController {
     private ProgressBar progressBar;
 
     @FXML
-    private Label progressionLabel;
-
-    @FXML
     private Pane containerPane;
 
     @FXML
     private Button saveButton;
+
+    @FXML
+    private Button helpFunctionButton;
 
     private Stage mainStage;
 
@@ -136,6 +140,7 @@ public class HelloController {
     private void startFractal(BaseFractal baseFractal, boolean shouldDisplayImage){
         this.progressBar.setDisable(false);
         this.saveButton.setDisable(true);
+        this.buttonGenerate.setDisable(true);
         this.progressBar.progressProperty().bind(baseFractal.progressProperty());
         new Thread(() -> {
             this.resultImg = baseFractal.compute();
@@ -145,12 +150,14 @@ public class HelloController {
                     ImageHelper.displayImage(image, resultImageView, containerPane);
                     this.progressBar.setDisable(true);
                     this.saveButton.setDisable(false);
+                    this.buttonGenerate.setDisable(false);
                     this.progressBar.progressProperty().unbind();
                 });
             } else {
                 resultImg.endTask(this.destinationFile);
                 Platform.runLater(() -> {
                     this.progressBar.setDisable(true);
+                    this.buttonGenerate.setDisable(false);
                     this.progressBar.progressProperty().unbind();
                 });
             }
@@ -175,6 +182,18 @@ public class HelloController {
         if (file != null){
             this.resultImg.endTask(file);
         }
+    }
+
+    @FXML
+    private void displayHelpEquation(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Format d'équations");
+        alert.setContentText("""
+                Entrez votre fonction comme suit :
+                +-(cn)z^n +- ... +- (c1)z^1 +- (c) où les cn sont écrits sous la forme : a +- bi (les espaces après et avant le symbole d'opération sont importants)
+                Attention à mettre exactement un espace après chaque exposant et pas avant.
+                Exemple :  - (-1)z^2 - (42 - .25i)z^1 - (3.5 + 8i)z^7 - (3.14 + 1.2i)\s""");
+        alert.showAndWait();
     }
 
     private void warnIfTooBig(BaseFractal fractale){
@@ -237,12 +256,14 @@ public class HelloController {
         this.currentFractal = FRACTAL.JULIA;
         this.titleLabel.setText("Julia");
         this.functionTextField.setDisable(false);
+        this.helpFunctionButton.setDisable(false);
     }
 
     @FXML
-    private void setMandelBrotFractal(){
+    private void setMandelbrotFractal(){
         this.currentFractal = FRACTAL.MANDELBROT;
         this.titleLabel.setText("Mandelbrot");
         this.functionTextField.setDisable(true);
+        this.helpFunctionButton.setDisable(true);
     }
 }

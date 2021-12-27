@@ -7,16 +7,8 @@ import javafx.scene.control.TextField;
 
 import java.util.regex.Pattern;
 
-public class RegexValidator implements ChangeListener<String> {
-    private final Pattern authorizedChars;
-    private final Pattern validator;
-    private final TextField textField;
-
-    public RegexValidator(Pattern authorizedChars, Pattern validator, TextField textField) {
-        this.authorizedChars = authorizedChars;
-        this.validator = validator;
-        this.textField = textField;
-    }
+public record RegexValidator(Pattern authorizedChars, Pattern validator,
+                             TextField textField) implements ChangeListener<String> {
 
     @Override
     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -25,7 +17,7 @@ public class RegexValidator implements ChangeListener<String> {
             return;
         }
 
-        if (!validator.matcher(newValue).matches() && !newValue.equals("")){
+        if (!validator.matcher(newValue).matches() && !newValue.equals("")) {
             textField.setStyle("-fx-background-color: red;");
         } else {
             textField.setStyle(null);

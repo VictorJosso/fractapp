@@ -4,9 +4,6 @@ import org.apache.commons.cli.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -47,7 +44,7 @@ public class CommandParser {
         }
 
         for (String elem: positiveIntegerArguments){
-            if (!positiveFloatPattern.matcher(commandLine.getOptionValue(elem, "1")).matches()){
+            if (!positiveIntegerPattern.matcher(commandLine.getOptionValue(elem, "1")).matches()){
                 throw new ParseException(commandLine.getOptionValue(elem) + ": Invalid value for "+elem);
             }
         }

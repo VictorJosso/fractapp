@@ -1,9 +1,5 @@
 package fr.josso.fractales.Core;
 
-import java.util.ArrayList;
-import java.util.function.UnaryOperator;
-
-
 public class ComplexPlane {
     private final float maxX;
     private final float maxY;
@@ -11,7 +7,6 @@ public class ComplexPlane {
     private final float minY;
     private final double step;
     private final int scale;
-    private final ArrayList<ArrayList<Complex>> points;
 
 
     private ComplexPlane(ComplexPlaneBuilder builder) {
@@ -20,7 +15,6 @@ public class ComplexPlane {
         this.minX = builder.minX;
         this.minY = builder.minY;
         this.step = builder.step;
-        this.points = builder.points;
         this.scale = (int) (1/builder.step);
     }
 
@@ -28,20 +22,8 @@ public class ComplexPlane {
         return new ComplexPlaneBuilder();
     }
 
-    public ArrayList<ArrayList<Complex>> getPoints() {
-        return points;
-    }
-
     public double getStep() {
         return step;
-    }
-
-    public float getMaxX() {
-        return maxX;
-    }
-
-    public float getMaxY() {
-        return maxY;
     }
 
     public float getMinX() {
@@ -70,8 +52,6 @@ public class ComplexPlane {
         private float minX = -1;
         private float minY = -1;
         private double step = 0.01;
-        private int scale;
-        private ArrayList<ArrayList<Complex>> points;
 
 
         public ComplexPlaneBuilder maxX(float maxX) {
@@ -99,26 +79,7 @@ public class ComplexPlane {
             return this;
         }
 
-        private ArrayList<ArrayList<Complex>> genPoints() {
-            //Is going up to 25 000 000 points
-            this.scale = (int) Math.pow(10, Double.toString(step).length() - 2);
-            int cmpt = 0;
-
-            ArrayList<ArrayList<Complex>> res = new ArrayList<>();
-            for (float y = minY * scale; y < maxY * this.scale; y += step * this.scale) {
-                ArrayList<Complex> line = new ArrayList<>();
-                for (float x = minX * scale; x < maxX * this.scale; x += step * this.scale) {
-                    line.add(new Complex((double) x / this.scale, (double) y / this.scale));
-                    cmpt++;
-                }
-                res.add(line);
-            }
-            System.out.println(cmpt);
-            return res;
-        }
-
         public ComplexPlane build() {
-            //this.points = genPoints();
             return new ComplexPlane(this);
         }
 

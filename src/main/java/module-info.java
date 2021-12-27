@@ -8,6 +8,7 @@ module fr.josso.fractales {
     requires java.desktop;
     requires java.logging;
     requires commons.cli;
+    requires progressbar;
 
     opens fr.josso.fractales to javafx.fxml;
     exports fr.josso.fractales;

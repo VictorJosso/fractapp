@@ -21,121 +21,120 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.josso.fractales.Graphics.HelloController">
-   <children>
-      <AnchorPane>
-         <children>
-            <VBox alignment="TOP_CENTER" cacheShape="false" prefHeight="800.0" prefWidth="294.0" AnchorPane.bottomAnchor="0.0">
-               <children>
-                  <MenuButton fx:id="choixMenuButton" alignment="CENTER" mnemonicParsing="false" text="Fractale">
-                    <items>
-                      <MenuItem fx:id="menuItemJulia" mnemonicParsing="false" onAction="#setJuliaFractal" text="Julia">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="J" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                      <MenuItem fx:id="menuItemMandelbrot" mnemonicParsing="false" onAction="#setMandelBrotFractal" text="Mandelbrot">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator></MenuItem>
-                    </items>
-                     <VBox.margin>
-                        <Insets left="5.0" top="5.0" />
-                     </VBox.margin>
-                  </MenuButton>
-                  <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Julia" textAlignment="CENTER">
-                     <VBox.margin>
-                        <Insets left="5.0" top="20.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Separator prefWidth="200.0" />
-                  <GridPane>
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <TextField fx:id="functionTextField" GridPane.columnIndex="1" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label text="Fonction" />
-                              <Button mnemonicParsing="false" style="-fx-background-color: transparent;">
-                                 <graphic>
-                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../../../../../../../Downloads/png-clipart-question-mark-computer-icons-button-button-logo-question.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <Label text="MinX" GridPane.rowIndex="2" />
-                        <Label text="MaxX" GridPane.rowIndex="3" />
-                        <Label text="MaxY" GridPane.rowIndex="5" />
-                        <Label text="MinY" GridPane.rowIndex="4" />
-                        <Label text="Step" GridPane.rowIndex="6" />
-                        <TextField fx:id="minXTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="maxXTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField fx:id="minYTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <TextField fx:id="maxYTextField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField fx:id="stepTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Label text="Radius" GridPane.rowIndex="8" />
-                        <Label text="Maximum iterations" GridPane.rowIndex="9" />
-                        <TextField fx:id="radiusTextField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <TextField fx:id="maxIterationsTextField" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                     </children>
-                     <VBox.margin>
-                        <Insets left="5.0" right="5.0" top="20.0" />
-                     </VBox.margin>
-                  </GridPane>
-                  <HBox>
-                     <VBox.margin>
-                        <Insets left="5.0" right="5.0" top="30.0" />
-                     </VBox.margin>
-                     <children>
-                        <Label fx:id="progressionLabel" text="Progression">
-                           <HBox.margin>
-                              <Insets left="5.0" right="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <ProgressBar fx:id="progressBar" disable="true" prefWidth="200.0" progress="0.0" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-            <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
-              <buttons>
-                  <Button fx:id="saveButton" disable="true" mnemonicParsing="false" onAction="#saveFractal" text="Enregistrer" />
-                  <Button fx:id="buttonReset" mnemonicParsing="false" text="Reset" />
-                <Button fx:id="buttonGenerate" mnemonicParsing="false" onAction="#onButtonGeneratePressed" text="Générer" />
-              </buttons>
-            </ButtonBar>
-         </children>
-      </AnchorPane>
-      <Separator orientation="VERTICAL" prefHeight="400.0" prefWidth="0.0" />
-      <Pane fx:id="containerPane" prefHeight="800.0" prefWidth="800.0">
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-         <children>
-            <ImageView fx:id="resultImageView" fitHeight="800.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
-         </children>
-      </Pane>
-   </children>
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+      prefWidth="1100.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="fr.josso.fractales.Graphics.HelloController">
+    <AnchorPane>
+        <VBox alignment="TOP_CENTER" cacheShape="false" prefHeight="800.0" prefWidth="294.0"
+              AnchorPane.bottomAnchor="0.0">
+            <MenuButton fx:id="choixMenuButton" alignment="CENTER" mnemonicParsing="false" text="Fractale">
+                <items>
+                    <MenuItem fx:id="menuItemJulia" mnemonicParsing="false" onAction="#setJuliaFractal"
+                              text="Julia">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="J" control="DOWN" meta="UP" shift="UP"
+                                                shortcut="UP"/>
+                        </accelerator>
+                    </MenuItem>
+                    <MenuItem fx:id="menuItemMandelbrot" mnemonicParsing="false"
+                              onAction="#setMandelbrotFractal" text="Mandelbrot">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP"
+                                                shortcut="UP"/>
+                        </accelerator>
+                    </MenuItem>
+                </items>
+                <VBox.margin>
+                    <Insets left="5.0" top="5.0"/>
+                </VBox.margin>
+            </MenuButton>
+            <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308"
+                   maxWidth="1.7976931348623157E308" text="Julia" textAlignment="CENTER">
+                <VBox.margin>
+                    <Insets left="5.0" top="20.0"/>
+                </VBox.margin>
+                <font>
+                    <Font size="24.0"/>
+                </font>
+            </Label>
+            <Separator prefWidth="200.0"/>
+            <GridPane>
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                </rowConstraints>
+                <VBox.margin>
+                    <Insets left="5.0" right="5.0" top="20.0"/>
+                </VBox.margin>
+                <TextField fx:id="functionTextField" GridPane.columnIndex="1"/>
+                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                    <Label text="Fonction"/>
+                    <Button fx:id="helpFunctionButton" focusTraversable="false" mnemonicParsing="false"
+                            onAction="#displayHelpEquation" style="-fx-background-color: transparent;">
+                        <graphic>
+                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                                       preserveRatio="true">
+                                <Image url="@question_mark_icon.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+                <Label text="MinX" GridPane.rowIndex="2"/>
+                <Label text="MaxX" GridPane.rowIndex="3"/>
+                <Label text="MaxY" GridPane.rowIndex="5"/>
+                <Label text="MinY" GridPane.rowIndex="4"/>
+                <Label text="Step" GridPane.rowIndex="6"/>
+                <TextField fx:id="minXTextField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <TextField fx:id="maxXTextField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                <TextField fx:id="minYTextField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                <TextField fx:id="maxYTextField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                <TextField fx:id="stepTextField" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                <Label text="Radius" GridPane.rowIndex="8"/>
+                <Label text="Maximum iterations" GridPane.rowIndex="9"/>
+                <TextField fx:id="radiusTextField" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+                <TextField fx:id="maxIterationsTextField" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+            </GridPane>
+            <HBox>
+                <VBox.margin>
+                    <Insets left="5.0" right="5.0" top="30.0"/>
+                </VBox.margin>
+                <Label fx:id="progressionLabel" text="Progression">
+                    <HBox.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </HBox.margin>
+                </Label>
+                <ProgressBar fx:id="progressBar" disable="true" prefWidth="200.0" progress="0.0"/>
+            </HBox>
+        </VBox>
+        <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0"
+                   AnchorPane.rightAnchor="5.0">
+            <buttons>
+                <Button fx:id="saveButton" disable="true" mnemonicParsing="false" onAction="#saveFractal"
+                        text="Enregistrer"/>
+                <Button fx:id="buttonReset" mnemonicParsing="false" text="Reset"/>
+                <Button fx:id="buttonGenerate" mnemonicParsing="false" onAction="#onButtonGeneratePressed"
+                        text="Générer"/>
+            </buttons>
+        </ButtonBar>
+    </AnchorPane>
+    <Separator orientation="VERTICAL" prefHeight="400.0" prefWidth="0.0"/>
+    <Pane fx:id="containerPane" prefHeight="800.0" prefWidth="800.0">
+        <HBox.margin>
+            <Insets/>
+        </HBox.margin>
+        <ImageView fx:id="resultImageView" fitHeight="800.0" fitWidth="800.0" pickOnBounds="true"
+                   preserveRatio="true"/>
+    </Pane>
 </HBox>
