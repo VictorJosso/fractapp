@@ -7,7 +7,7 @@ import fr.josso.fractales.Fractals.BaseFractal;
 import fr.josso.fractales.Fractals.Julia;
 import fr.josso.fractales.Fractals.Mandelbrot;
 import fr.josso.fractales.Graphics.HelloApplication;
-import fr.josso.fractales.cmdLine.CommandParser;
+import fr.josso.fractales.CmdLine.CommandParser;
 import javafx.application.Application;
 import org.apache.commons.cli.CommandLine;
 

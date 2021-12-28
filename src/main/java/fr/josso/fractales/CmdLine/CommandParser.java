@@ -1,4 +1,4 @@
-package fr.josso.fractales.cmdLine;
+package fr.josso.fractales.CmdLine;
 
 import org.apache.commons.cli.*;
 
