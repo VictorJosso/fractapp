@@ -40,9 +40,9 @@ public class Mandelbrot extends BaseFractal {
             ite++;
             zn = fun.apply(zn);
             if (BigDecimal.valueOf((long) zn.modulus()).compareTo(new BigDecimal(this.radius)) > 0) {
-                return 0;
+                return ite;
             }
         }
-        return 100;
+        return ite;
     }
 }

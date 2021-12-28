@@ -86,6 +86,9 @@ public class HelloController {
     @FXML
     private Button helpFunctionButton;
 
+    @FXML
+    private Button invertColorsButton;
+
     private Stage mainStage;
 
     private FRACTAL currentFractal = FRACTAL.JULIA;
@@ -141,6 +144,7 @@ public class HelloController {
         this.progressBar.setDisable(false);
         this.saveButton.setDisable(true);
         this.buttonGenerate.setDisable(true);
+        this.invertColorsButton.setDisable(true);
         this.progressBar.progressProperty().bind(baseFractal.progressProperty());
         new Thread(() -> {
             this.resultImg = baseFractal.compute();
@@ -150,6 +154,7 @@ public class HelloController {
                     ImageHelper.displayImage(image, resultImageView, containerPane);
                     this.progressBar.setDisable(true);
                     this.saveButton.setDisable(false);
+                    this.invertColorsButton.setDisable(false);
                     this.buttonGenerate.setDisable(false);
                     this.progressBar.progressProperty().unbind();
                 });
@@ -225,6 +230,30 @@ public class HelloController {
             this.warnIfTooBig(julia);
         } else {
             this.startFractal(julia, true);
+        }
+    }
+
+    @FXML
+    private void invertColors(){
+        if (this.resultImg != null){
+            new Thread(() -> {
+                Platform.runLater(() -> {
+                    this.invertColorsButton.setDisable(true);
+                    this.saveButton.setDisable(true);
+                    this.buttonGenerate.setDisable(true);
+                    this.progressBar.setDisable(false);
+                    this.progressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+                });
+                resultImg.invertColors();
+                Platform.runLater(() -> {
+                        ImageHelper.displayImage(SwingFXUtils.toFXImage(this.resultImg.getImage(), null), resultImageView, containerPane);
+                        this.invertColorsButton.setDisable(false);
+                        this.saveButton.setDisable(false);
+                        this.buttonGenerate.setDisable(false);
+                        this.progressBar.setDisable(true);
+                        this.progressBar.setProgress(100);
+                });
+            }).start();
         }
     }
 

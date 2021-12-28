@@ -35,6 +35,6 @@ public class Julia extends BaseFractal{
             zn = f.apply(zn);
             iterations++;
         }
-        return iterations;
+        return 3*iterations/4;
     }
 }

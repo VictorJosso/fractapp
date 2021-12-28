@@ -26,7 +26,7 @@ public class ResultImg {
         ResultImg img = new ResultImg(matrix.length, matrix[0].length);
         for(int x = 0; x < matrix.length; x++){
             for(int y = 0; y < matrix[0].length; y++){
-                img.setPixel(x, y, Color.HSBtoRGB(matrix[x][y], 0.7f, 0.7f));
+                img.setPixel(x, y, Color.HSBtoRGB((float) Math.abs(Math.sin(matrix[x][y]*2*Math.PI)), (float) Math.abs(Math.sin((1-matrix[x][y])*2*Math.PI)), matrix[x][y]));
             }
         }
         return img;
@@ -49,6 +49,16 @@ public class ResultImg {
             System.out.println("Done !");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void invertColors() {
+        for (int x = 0; x < img.getWidth(); x++){
+            for (int y = 0; y < img.getHeight(); y++){
+                Color oldColor = new Color(img.getRGB(x, y));
+                Color newColor = new Color(255 - oldColor.getRed(), 255 - oldColor.getGreen(), 255 - oldColor.getBlue());
+                setPixel(x, y, newColor.getRGB());
+            }
         }
     }
 }
