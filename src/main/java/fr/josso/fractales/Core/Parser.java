@@ -9,17 +9,28 @@ public class Parser {
     private final String input;
     private HashMap<Integer, Complex> coefficients;
 
+    /**
+     * @param input the function to parse.
+     */
     public Parser(String input) {
         this.input = input.trim();
         this.setHashMap();
     }
 
+    /**
+     * @param init initial char[].
+     * @param length number of char to copy.
+     * @return a copy of the first length char of init.
+     */
     private char[] formate(char[] init, int length) {
         char[] res = new char [length];
         System.arraycopy(init, 0, res, 0, length);
         return res;
     }
 
+    /**
+     * @return an HashMap in which the keys are the power and the values are the coefficients of the polynomial.
+     */
     private HashMap<Integer, String> parsePow(){
         HashMap<Integer, String> res = new HashMap<>();
         int i = 0;
@@ -51,6 +62,10 @@ public class Parser {
     }
 
 
+    /**
+     * @param coef a coefficient of the polynomial to parse.
+     * @return a Complex representation of coef.
+     */
     public Complex readCoefficent(String coef){
 
 
@@ -96,22 +111,32 @@ public class Parser {
         return Complex.multiply(res, new Complex(signe, 0));
     }
 
+    /**
+     * Parse the polynomial and save the result in the coefficients attribute.
+     */
     private void setHashMap() {
         HashMap<Integer, Complex> res = new HashMap<>();
         HashMap<Integer, String> steps = this.parsePow();
         Set<Integer> keys = steps.keySet();
-
         for (Integer key : keys) {
             res.put(key, readCoefficent(steps.get(key)));
         }
         this.coefficients = res;
     }
 
+    /**
+     * @param n power of the Complex.
+     * @param func the function already build by recursive usage.
+     * @return a function that adds func with z to the power n with a coefficient.
+     */
     private UnaryOperator<Complex> buildFunctionForExposant(int n, UnaryOperator<Complex> func){
         Complex coeff = coefficients.get(n);
         return z -> Complex.add(func.apply(z), Complex.multiply(z.pow(n), coeff));
     }
 
+    /**
+     * @return build the UnaryOperator that match the given polynomial to parse.
+     */
     public UnaryOperator<Complex> toFunction(){
 
         UnaryOperator<Complex> result = z -> new Complex(0, 0);
@@ -121,6 +146,10 @@ public class Parser {
         return result;
     }
 
+    /**
+     * @param c a char.
+     * @return true if c is a digit else false.
+     */
     private boolean isDigit(char c) {
         return c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c =='9';
     }

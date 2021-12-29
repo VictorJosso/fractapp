@@ -14,14 +14,28 @@ public class ResultImg {
     File f = new File("MyFractal.png");
 
 
+    /**
+     * a Constructor
+     * @param width width of the new ResultImg.
+     * @param height height of the new ResultImg.
+     */
     public ResultImg(int width, int height){
         this.img = BigBufferedImage.create(width, height, BufferedImage.TYPE_INT_RGB);
     }
 
+    /**
+     * @param x position on the X-axis of the wanted pixel.
+     * @param y position on the Y-axis of the wanted pixel.
+     * @param color color wanted at the pixel given by x and y.
+     */
     public void setPixel(int x, int y, int color){
         this.img.setRGB(x, y, color);
     }
 
+    /**
+     * @param matrix a matrix containing the wanted color for each pixel of the ResultImg.
+     * @return a ResultImg with the wanted color (given by matrix) at each pixel.
+     */
     public static ResultImg fromMatrix(float[][] matrix){
         ResultImg img = new ResultImg(matrix.length, matrix[0].length);
         for(int x = 0; x < matrix.length; x++){
@@ -32,16 +46,25 @@ public class ResultImg {
         return img;
     }
 
+    /**
+     * @return this image.
+     */
     public BufferedImage getImage() {
         return img;
     }
 
 
+    /**
+     * @param f the saving file.
+     */
     public void endTask(File f){
         this.f = f;
         this.endTask();
     }
 
+    /**
+     * Save the image.
+     */
     public void endTask() {
         try {
             System.out.println("Saving file...");
@@ -52,6 +75,9 @@ public class ResultImg {
         }
     }
 
+    /**
+     * Invert the color of each pixel of the image.
+     */
     public void invertColors() {
         for (int x = 0; x < img.getWidth(); x++){
             for (int y = 0; y < img.getHeight(); y++){

@@ -32,6 +32,12 @@ public class BigBufferedImage extends BufferedImage {
     private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
     public static final int MAX_PIXELS_IN_MEMORY =  1024 * 1024;
 
+    /**
+     * @param width wanted width of the image.
+     * @param height wanted height if the image.
+     * @param imageType wanted type of the image.
+     * @return a BufferedImage or BigBufferedImage depending on the wanted size.
+     */
     public static BufferedImage create(int width, int height, int imageType) {
         if (width * height > MAX_PIXELS_IN_MEMORY) {
             try {
@@ -45,6 +51,14 @@ public class BigBufferedImage extends BufferedImage {
         }
     }
 
+    /**
+     * @param tempDir the buffer directory.
+     * @param width wanted width of the image.
+     * @param height wanted height if the image.
+     * @param imageType wanted type of the image.
+     * @return a BigBufferedImage of the wanted size.
+     * @throws IOException in case of unsupported image type.
+     */
     private static BufferedImage createBigBufferedImage(File tempDir, int width, int height, int imageType)
             throws IOException {
         FileDataBuffer buffer = new FileDataBuffer(tempDir, width * height, 4);
@@ -75,12 +89,23 @@ public class BigBufferedImage extends BufferedImage {
         return new BigBufferedImage(colorModel, raster, colorModel.isAlphaPremultiplied(), null);
     }
 
+    /**
+     * @param cm ColorModel for the new image.
+     * @param raster Raster for the image data.
+     * @param isRasterPremultiplied if true, the data in the raster has been premultiplied with alpha.
+     * @param properties Hashtable of String/Object pairs.
+     */
     private BigBufferedImage(ColorModel cm, SimpleRaster raster, boolean isRasterPremultiplied, Hashtable<?, ?> properties) {
         super(cm, raster, isRasterPremultiplied, properties);
     }
 
     private static class SimpleRaster extends WritableRaster {
 
+        /**
+         * @param sampleModel the sampleModel of the new SimpleRaster.
+         * @param dataBuffer the dataBuffer of the new SimpleRaster.
+         * @param origin the origin of the new SimpleRaster.
+         */
         public SimpleRaster(SampleModel sampleModel, FileDataBuffer dataBuffer, Point origin) {
             super(sampleModel, dataBuffer, origin);
         }

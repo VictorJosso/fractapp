@@ -15,6 +15,10 @@ import java.io.File;
 import java.math.BigInteger;
 
 public class Main {
+    /**
+     * the Main method.
+     * @param args commandLine arguments.
+     */
     public static void main(String[] args) {
         CommandLine commandLine = CommandParser.parse(args);
 

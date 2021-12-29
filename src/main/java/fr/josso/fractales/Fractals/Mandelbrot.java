@@ -10,16 +10,36 @@ import java.util.function.UnaryOperator;
 
 public class Mandelbrot extends BaseFractal {
 
+    /**
+     * a Constructor.
+     * @param f the function that will be used to construct the fractal.
+     * @param maxIter the maximal number of times that the given function is iterated.
+     * @param radius the radius (which define the divergence) of the fractal.
+     * @param plane the portion of the plane in which the fractal is build.
+     */
     public Mandelbrot(UnaryOperator<Complex> f, long maxIter, BigInteger radius, ComplexPlane plane) {
         super(f, maxIter, radius, plane, true);
 
     }
 
+    /**
+     * a Constructor.
+     * @param f the function that will be used to construct the fractal.
+     * @param maxIter the maximal number of times that the given function is iterated.
+     * @param radius the radius (which define the divergence) of the fractal.
+     * @param plane the portion of the plane in which the fractal is build.
+     * @param isui true for a graphical version else false.
+     */
     public Mandelbrot(UnaryOperator<Complex> f, long maxIter, BigInteger radius, ComplexPlane plane, boolean isui) {
         super(f, maxIter, radius, plane, isui);
 
     }
 
+    /**
+     * a Constructor.
+     * @param params necessary parameters for the creation of a Mandelbrot set.
+     * @return the corresponding Mandelbrot set.
+     */
     public static Mandelbrot fromParams(FractalParams params) {
         ComplexPlane plane = ComplexPlane.builder()
                 .minX(params.minX())
@@ -31,6 +51,10 @@ public class Mandelbrot extends BaseFractal {
         return new Mandelbrot(z->z, params.maxIter(), params.radius(), plane);
     }
 
+    /**
+     * @param z a Complex number (a point on the plane).
+     * @return the divergence index of that number.
+     */
     @Override
     public int divergenceIndex(Complex z) {
         UnaryOperator<Complex> fun = complex -> Complex.add(complex.pow(2), z);
