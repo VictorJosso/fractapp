@@ -1,0 +1,6 @@
+module:fr.josso.fractales
+fr.josso.fractales
+fr.josso.fractales.CmdLine
+fr.josso.fractales.Core
+fr.josso.fractales.Fractals
+fr.josso.fractales.Graphics
