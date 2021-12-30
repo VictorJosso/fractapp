@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.IOException;
 
 
+/**
+ * A visual representation of a fractal.
+ */
 public class ResultImg {
 
     BufferedImage img;
@@ -15,7 +18,7 @@ public class ResultImg {
 
 
     /**
-     * a Constructor
+     * a Constructor.
      * @param width width of the new ResultImg.
      * @param height height of the new ResultImg.
      */
@@ -24,6 +27,7 @@ public class ResultImg {
     }
 
     /**
+     * Set the color of a pixel.
      * @param x position on the X-axis of the wanted pixel.
      * @param y position on the Y-axis of the wanted pixel.
      * @param color color wanted at the pixel given by x and y.
@@ -33,6 +37,7 @@ public class ResultImg {
     }
 
     /**
+     * Build a ResultImg from a matrix.
      * @param matrix a matrix containing the wanted color for each pixel of the ResultImg.
      * @return a ResultImg with the wanted color (given by matrix) at each pixel.
      */
@@ -47,6 +52,7 @@ public class ResultImg {
     }
 
     /**
+     * get this image.
      * @return this image.
      */
     public BufferedImage getImage() {
@@ -55,6 +61,7 @@ public class ResultImg {
 
 
     /**
+     * Save the png in f file.
      * @param f the saving file.
      */
     public void endTask(File f){

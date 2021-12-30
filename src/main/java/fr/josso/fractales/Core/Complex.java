@@ -1,8 +1,12 @@
 package fr.josso.fractales.Core;
 
+/**
+ * A representation for a complex number.
+ */
 public record Complex(double realPart, double imaginaryPart) {
 
     /**
+     * Getter for realPart.
      * @return The imaginary part of that number.
      */
     public double getRealPart() {
@@ -10,6 +14,7 @@ public record Complex(double realPart, double imaginaryPart) {
     }
 
     /**
+     * Getter for imaginaryPart.
      * @return The imaginary part of that number.
      */
     public double getImaginaryPart() {
@@ -18,6 +23,7 @@ public record Complex(double realPart, double imaginaryPart) {
 
 
     /**
+     * Add to complex numbers into a new one.
      * @param z1 First term of the addition
      * @param z2 Second term of the addition
      * @return The addition of z1 and z2
@@ -29,6 +35,7 @@ public record Complex(double realPart, double imaginaryPart) {
 
 
     /**
+     * Multiply to complex numbers into a new one.
      * @param z1 First factor of the multiplication
      * @param z2 Second factor of the multiplication
      * @return The multiplication of z1 and z2
@@ -39,6 +46,7 @@ public record Complex(double realPart, double imaginaryPart) {
     }
 
     /**
+     * This complex at the power exponent.
      * @param exponent the wanted power
      * @return this number to the power exponent
      */
@@ -52,6 +60,7 @@ public record Complex(double realPart, double imaginaryPart) {
 
 
     /**
+     * Give the modulus.
      * @return this number's modulus
      */
     public double modulus() {
@@ -60,6 +69,7 @@ public record Complex(double realPart, double imaginaryPart) {
 
 
     /**
+     * Give a string representation.
      * @return a string representation of this number
      */
     @Override

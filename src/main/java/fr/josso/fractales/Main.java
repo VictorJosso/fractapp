@@ -14,9 +14,13 @@ import org.apache.commons.cli.CommandLine;
 import java.io.File;
 import java.math.BigInteger;
 
+/**
+ * The type Main.
+ */
 public class Main {
     /**
      * the Main method.
+     *
      * @param args commandLine arguments.
      */
     public static void main(String[] args) {

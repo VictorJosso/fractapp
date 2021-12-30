@@ -1,5 +1,8 @@
 package fr.josso.fractales.Core;
 
+/**
+ * A representation of the complex plane.
+ */
 public class ComplexPlane {
     private final float maxX;
     private final float maxY;
@@ -10,6 +13,7 @@ public class ComplexPlane {
 
 
     /**
+     * A constructor for a builder pattern.
      * @param builder an intern class to build a plane.
      */
     private ComplexPlane(ComplexPlaneBuilder builder) {
@@ -22,6 +26,7 @@ public class ComplexPlane {
     }
 
     /**
+     * Create a builder.
      * @return a builder necessary for instantiation.
      */
     public static ComplexPlaneBuilder builder() {
@@ -29,6 +34,7 @@ public class ComplexPlane {
     }
 
     /**
+     * Getter for step.
      * @return return the step between to point in real and imaginary part.
      */
     public double getStep() {
@@ -36,6 +42,7 @@ public class ComplexPlane {
     }
 
     /**
+     * Getter for minX.
      * @return minimal real part of any point of the plane.
      */
     public float getMinX() {
@@ -43,6 +50,7 @@ public class ComplexPlane {
     }
 
     /**
+     * Getter for minY.
      * @return minimal imaginary part of any point of the plane.
      */
     public float getMinY() {
@@ -50,6 +58,7 @@ public class ComplexPlane {
     }
 
     /**
+     * Getter for scale.
      * @return the scale of this plane.
      */
     public int getScale() {
@@ -57,19 +66,24 @@ public class ComplexPlane {
     }
 
     /**
-     * @return the number of points on the X axis.
+     * Getter for the number of points on the X-axis.
+     * @return the number of points on the X-axis.
      */
     public int getNbPointsX(){
         return (int) (this.getScale() * (this.maxX - this.minX));
     }
 
     /**
-     * @return the number of points on the Y axis.
+     * Getter for the number of points on the Y-axis.
+     * @return the number of points on the Y-axis.
      */
     public int getNbPointsY(){
         return (int) (this.getScale() * (this.maxY - this.minY));
     }
 
+    /**
+     * A builder for ComplexPlane.
+     */
     public static class ComplexPlaneBuilder {
         private float maxX = 1;
         private float maxY = 1;
@@ -79,6 +93,7 @@ public class ComplexPlane {
 
 
         /**
+         * Set maxX.
          * @param maxX wanted maximal real part.
          * @return this builder with maxX updated (default at 1).
          */
@@ -89,6 +104,7 @@ public class ComplexPlane {
 
 
         /**
+         * Set minX.
          * @param minX wanted minimal real part.
          * @return this builder with minX updated (default at -1).
          */
@@ -98,6 +114,7 @@ public class ComplexPlane {
         }
 
         /**
+         * Set maxY.
          * @param maxY wanted maximal imaginary part.
          * @return this builder with maxY updated (default at 1).
          */
@@ -107,6 +124,7 @@ public class ComplexPlane {
         }
 
         /**
+         * Set minY.
          * @param minY wanted minimal imaginary part.
          * @return this builder with minY updated (default at -1).
          */
@@ -116,6 +134,7 @@ public class ComplexPlane {
         }
 
         /**
+         * Set step.
          * @param step wanted difference in imaginary or real part between two points.
          * @return this builder with maxY updated (default at 0.01).
          */
@@ -125,6 +144,7 @@ public class ComplexPlane {
         }
 
         /**
+         * Builde a ComplexPlane.
          * @return a ComplexPlane with the same parameters as this builder.
          */
         public ComplexPlane build() {
@@ -134,6 +154,7 @@ public class ComplexPlane {
     }
 
     /**
+     * Give a string representation.
      * @return a string representation of this ComplexPlane.
      */
     @Override

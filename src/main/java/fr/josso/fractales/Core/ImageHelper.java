@@ -8,14 +8,28 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+/**
+ * The type Image helper.
+ */
 public record ImageHelper(ImageView resultImageView, Pane containerPane) {
     private static final int MIN_PIXELS = 100;
 
+    /**
+     * Display image.
+     *
+     * @param image         the image
+     * @param imageView     the image view
+     * @param containerPane the container pane
+     */
     public static void displayImage(Image image, ImageView imageView, Pane containerPane) {
         ImageHelper helper = new ImageHelper(imageView, containerPane);
         helper.process(image);
     }
 
+    /**
+     * Handle the zoom.
+     * @param image the actual image
+     */
     private void process(Image image) {
         double width = image.getWidth();
         double height = image.getHeight();
@@ -23,7 +37,6 @@ public record ImageHelper(ImageView resultImageView, Pane containerPane) {
         resultImageView.setImage(image);
         resultImageView.setPreserveRatio(true);
         reset(resultImageView, width, height);
-
 
         ObjectProperty<Point2D> click = new SimpleObjectProperty<>();
 
@@ -76,6 +89,12 @@ public record ImageHelper(ImageView resultImageView, Pane containerPane) {
 
     }
 
+    /**
+     * Make an image from a view.
+     * @param imageView initial view.
+     * @param coordinates origin of the image.
+     * @return origin of an image.
+     */
     private Point2D imageViewToImage(ImageView imageView, Point2D coordinates) {
         double xProportion = coordinates.getX() / imageView.getBoundsInLocal().getWidth();
         double yProportion = coordinates.getY() / imageView.getBoundsInLocal().getHeight();
@@ -86,6 +105,11 @@ public record ImageHelper(ImageView resultImageView, Pane containerPane) {
                 viewport.getMinY() + yProportion * viewport.getHeight());
     }
 
+    /**
+     * Shift the view.
+     * @param imageView initial view.
+     * @param delta shift size.
+     */
     private void shift(ImageView imageView, Point2D delta) {
         Rectangle2D viewport = imageView.getViewport();
 
@@ -101,11 +125,24 @@ public record ImageHelper(ImageView resultImageView, Pane containerPane) {
         imageView.setViewport(new Rectangle2D(minX, minY, viewport.getWidth(), viewport.getHeight()));
     }
 
+    /**
+     * Limit a value in a min-max range.
+     * @param value the value to limit.
+     * @param min minimal value
+     * @param max maximal value
+     * @return value limited by min and max
+     */
     private double clamp(double value, double min, double max) {
         return Math.max(Math.min(value, max), min);
     }
 
 
+    /**
+     * Reset the view.
+     * @param imageView initial view.
+     * @param width width of the original view.
+     * @param height height of the original view.
+     */
     private void reset(ImageView imageView, double width, double height) {
         imageView.setViewport(new Rectangle2D(0, 0, width, height));
     }

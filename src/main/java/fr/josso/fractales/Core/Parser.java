@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.function.UnaryOperator;
 
+/**
+ * A polynomial parser.
+ */
 public class Parser {
 
     private final String input;
     private HashMap<Integer, Complex> coefficients;
 
     /**
+     * a Constructor.
      * @param input the function to parse.
      */
     public Parser(String input) {
@@ -18,6 +22,7 @@ public class Parser {
     }
 
     /**
+     * Copy of the first length char of init.
      * @param init initial char[].
      * @param length number of char to copy.
      * @return a copy of the first length char of init.
@@ -29,6 +34,7 @@ public class Parser {
     }
 
     /**
+     * Parse the polynomial with the powers.
      * @return an HashMap in which the keys are the power and the values are the coefficients of the polynomial.
      */
     private HashMap<Integer, String> parsePow(){
@@ -63,11 +69,11 @@ public class Parser {
 
 
     /**
+     * Parser a complex coefficient into a Complex.
      * @param coef a coefficient of the polynomial to parse.
      * @return a Complex representation of coef.
      */
     public Complex readCoefficent(String coef){
-
 
         if (coef.isEmpty()) return new Complex(1,0);
 
@@ -125,6 +131,7 @@ public class Parser {
     }
 
     /**
+     * Build a part of the final function.
      * @param n power of the Complex.
      * @param func the function already build by recursive usage.
      * @return a function that adds func with z to the power n with a coefficient.
@@ -135,6 +142,7 @@ public class Parser {
     }
 
     /**
+     * Give the parsed function as an UnaryOperator.
      * @return build the UnaryOperator that match the given polynomial to parse.
      */
     public UnaryOperator<Complex> toFunction(){
@@ -147,6 +155,7 @@ public class Parser {
     }
 
     /**
+     * Says if the given char is a digit.
      * @param c a char.
      * @return true if c is a digit else false.
      */

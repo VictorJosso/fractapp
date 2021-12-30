@@ -10,6 +10,7 @@ package fr.josso.fractales.Core;
  * https://www.facebook.com/pulispace
  * http://nyomdmegteis.hu/en/
  */
+
 import java.awt.Point;
 import java.awt.color.ColorSpace;
 import java.awt.image.BandedSampleModel;
@@ -27,14 +28,22 @@ import java.nio.channels.FileChannel;
 import java.util.HashSet;
 import java.util.Hashtable;
 
+/**
+ * A class to store big image.
+ */
 public class BigBufferedImage extends BufferedImage {
 
     private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
+    /**
+     * The constant MAX_PIXELS_IN_MEMORY.
+     */
     public static final int MAX_PIXELS_IN_MEMORY =  1024 * 1024;
 
     /**
-     * @param width wanted width of the image.
-     * @param height wanted height if the image.
+     * a Constructor.
+     *
+     * @param width     wanted width of the image.
+     * @param height    wanted height if the image.
      * @param imageType wanted type of the image.
      * @return a BufferedImage or BigBufferedImage depending on the wanted size.
      */
@@ -52,6 +61,7 @@ public class BigBufferedImage extends BufferedImage {
     }
 
     /**
+     * a Constructor.
      * @param tempDir the buffer directory.
      * @param width wanted width of the image.
      * @param height wanted height if the image.
@@ -90,6 +100,7 @@ public class BigBufferedImage extends BufferedImage {
     }
 
     /**
+     * a Constructor.
      * @param cm ColorModel for the new image.
      * @param raster Raster for the image data.
      * @param isRasterPremultiplied if true, the data in the raster has been premultiplied with alpha.
@@ -102,9 +113,11 @@ public class BigBufferedImage extends BufferedImage {
     private static class SimpleRaster extends WritableRaster {
 
         /**
+         * Instantiates a new Simple raster.
+         *
          * @param sampleModel the sampleModel of the new SimpleRaster.
-         * @param dataBuffer the dataBuffer of the new SimpleRaster.
-         * @param origin the origin of the new SimpleRaster.
+         * @param dataBuffer  the dataBuffer of the new SimpleRaster.
+         * @param origin      the origin of the new SimpleRaster.
          */
         public SimpleRaster(SampleModel sampleModel, FileDataBuffer dataBuffer, Point origin) {
             super(sampleModel, dataBuffer, origin);
@@ -112,14 +125,23 @@ public class BigBufferedImage extends BufferedImage {
 
     }
 
+    /**
+     * An intern class to dispose of the buffers.
+     */
     private static final class FileDataBufferDeleterHook extends Thread {
 
         static {
             Runtime.getRuntime().addShutdownHook(new FileDataBufferDeleterHook());
         }
 
+        /**
+         * Set the structure that contains the buffers to dispose.
+         */
         private static final HashSet<FileDataBuffer> undisposedBuffers = new HashSet<>();
 
+        /**
+         * Dispose of the buffers.
+         */
         @Override
         public void run() {
             final FileDataBuffer[] buffers = undisposedBuffers.toArray(new FileDataBuffer[0]);
@@ -129,6 +151,9 @@ public class BigBufferedImage extends BufferedImage {
         }
     }
 
+    /**
+     * An intern class to buff file data.
+     */
     private static class FileDataBuffer extends DataBuffer {
 
         private final String id = "buffer-" + System.currentTimeMillis() + "-" + ((int) (Math.random() * 1000));
@@ -138,12 +163,24 @@ public class BigBufferedImage extends BufferedImage {
         private RandomAccessFile[] accessFiles;
         private MappedByteBuffer[] buffer;
 
+        /**
+         * Instantiates a new File data buffer.
+         *
+         * @param dir      the dir
+         * @param size     the size
+         * @param numBanks the num banks
+         * @throws IOException the io exception
+         */
         public FileDataBuffer(File dir, int size, int numBanks) throws IOException {
             super(TYPE_BYTE, size, numBanks);
             this.dir = dir;
             init();
         }
 
+        /**
+         * Initialise the buffer.
+         * @throws IOException in case of unreachable directory.
+         */
         private void init() throws IOException {
             FileDataBufferDeleterHook.undisposedBuffers.add(this);
             if (dir == null) {
@@ -168,16 +205,32 @@ public class BigBufferedImage extends BufferedImage {
             }
         }
 
+        /**
+         * Getter for an element.
+         * @param bank index of bank of the element.
+         * @param i index of the element in bank.
+         * @return the wanted element.
+         */
         @Override
         public int getElem(int bank, int i) {
             return buffer[bank].get(i) & 0xff;
         }
 
+
+        /**
+         * Setter for an element.
+         * @param bank index of bank of the element.
+         * @param i index of the element in bank.
+         * @param val value to store.
+         */
         @Override
         public void setElem(int bank, int i, int val) {
             buffer[bank].put(i, (byte) val);
         }
 
+        /**
+         * Dispose of the buffer.
+         */
         private void disposeNow() {
             this.buffer = null;
             if (accessFiles != null) {

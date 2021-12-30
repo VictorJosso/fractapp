@@ -7,9 +7,18 @@ import javafx.scene.control.TextField;
 
 import java.util.regex.Pattern;
 
+/**
+ * The type Regex validator.
+ */
 public record RegexValidator(Pattern authorizedChars, Pattern validator,
                              TextField textField) implements ChangeListener<String> {
 
+    /**
+     * Set the background of the field in red if invalid.
+     * @param observable the observed field.
+     * @param oldValue the old value.
+     * @param newValue the new value.
+     */
     @Override
     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
         if (!authorizedChars.matcher(newValue).matches() && !newValue.equals("")) {

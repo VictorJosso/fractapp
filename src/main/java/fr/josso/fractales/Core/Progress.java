@@ -5,11 +5,15 @@ import me.tongfei.progressbar.*;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * A class to show the progression.
+ */
 public class Progress extends ProgressBar{
     private final double totalOperations;
     private int done;
 
     /**
+     * a Constructor.
      * @param totalOperations how many operations are needed.
      * @param displayProgress true to show the progress bar else otherwise.
      */
@@ -21,6 +25,7 @@ public class Progress extends ProgressBar{
 
 
     /**
+     * Get the progression.
      * @return the actual progression.
      */
     public double getProgression(){
@@ -36,6 +41,7 @@ public class Progress extends ProgressBar{
     }
 
     /**
+     * Get the actual number of made operations.
      * @return how many operations are done.
      */
     public int getDone() {
@@ -43,6 +49,7 @@ public class Progress extends ProgressBar{
     }
 
     /**
+     * Get the total number of operation.
      * @return the total number of needed operations.
      */
     public double getTotalOperations() {

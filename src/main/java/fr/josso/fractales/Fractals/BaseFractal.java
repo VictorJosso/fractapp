@@ -7,6 +7,9 @@ import java.math.BigInteger;
 import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 
+/**
+ * The fractal type.
+ */
 public abstract class BaseFractal extends Task<ResultImg> {
     protected final UnaryOperator<Complex> f;
     final long maxIter;
@@ -37,12 +40,14 @@ public abstract class BaseFractal extends Task<ResultImg> {
     }
 
     /**
+     * Calculate the divergence of a number.
      * @param z a Complex number (a point on the plane).
      * @return the divergence index of that number.
      */
     protected abstract int divergenceIndex(Complex z);
 
     /**
+     * Save the fractal into a matrix.
      * @param x the coordinate on the X-axis.
      * @param y the coordinate on the Y-axis.
      * @param result the float associated to that point of the plane.
@@ -52,6 +57,7 @@ public abstract class BaseFractal extends Task<ResultImg> {
     }
 
     /**
+     * Draw the image.
      * @return the image corresponding to the fractal.
      */
     public ResultImg compute(){
@@ -72,7 +78,8 @@ public abstract class BaseFractal extends Task<ResultImg> {
     }
 
     /**
-     * @return lunch the Task.
+     * Lunch the Task.
+     * @return the result image.
      */
     @Override
     protected ResultImg call() {

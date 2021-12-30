@@ -7,8 +7,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * The type Command parser.
+ */
 public class CommandParser {
 
+    /**
+     * Validate the arguments.
+     * @param commandLine the structure with the arguments.
+     * @throws ParseException in case of invalid arguments.
+     */
     private static void validate(CommandLine commandLine) throws ParseException {
         Pattern floatPattern = Pattern.compile("-?\\d+(\\.\\d+)?");
         Pattern positiveFloatPattern = Pattern.compile("\\d+(\\.\\d+)?");
@@ -50,6 +58,12 @@ public class CommandParser {
         }
     }
 
+    /**
+     * Parse command line.
+     *
+     * @param argv the argv
+     * @return the command line
+     */
     public static CommandLine parse(String[] argv) {
         Options options = new Options();
         Option juliaOption = Option.builder("j")

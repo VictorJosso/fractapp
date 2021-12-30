@@ -5,14 +5,18 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.function.UnaryOperator;
 
+/**
+ * The type Julia.
+ */
 public class Julia extends BaseFractal{
 
     /**
      * a Constructor.
-     * @param f the function that will be used to construct the fractal.
+     *
+     * @param f       the function that will be used to construct the fractal.
      * @param maxIter the maximal number of times that the given function is iterated.
-     * @param radius the radius (which define the divergence) of the fractal.
-     * @param plane the portion of the plane in which the fractal is build.
+     * @param radius  the radius (which define the divergence) of the fractal.
+     * @param plane   the portion of the plane in which the fractal is build.
      */
     public Julia(UnaryOperator<Complex> f, long maxIter, BigInteger radius, ComplexPlane plane) {
         super(f, maxIter, radius, plane, true);
@@ -20,11 +24,12 @@ public class Julia extends BaseFractal{
 
     /**
      * a Constructor.
-     * @param f the function that will be used to construct the fractal.
+     *
+     * @param f       the function that will be used to construct the fractal.
      * @param maxIter the maximal number of times that the given function is iterated.
-     * @param radius the radius (which define the divergence) of the fractal.
-     * @param plane the portion of the plane in which the fractal is build.
-     * @param isui true for a graphical version else false.
+     * @param radius  the radius (which define the divergence) of the fractal.
+     * @param plane   the portion of the plane in which the fractal is build.
+     * @param isui    true for a graphical version else false.
      */
     public Julia(UnaryOperator<Complex> f, long maxIter, BigInteger radius, ComplexPlane plane, boolean isui) {
         super(f, maxIter, radius, plane, isui);
@@ -33,6 +38,7 @@ public class Julia extends BaseFractal{
 
     /**
      * a Constructor.
+     *
      * @param params necessary parameters for the creation of a Julia set.
      * @return the corresponding Julia set.
      */
@@ -49,6 +55,7 @@ public class Julia extends BaseFractal{
 
 
     /**
+     * Calculate the divergence of a number.
      * @param z a Complex number (a point on the plane).
      * @return the divergence index of that number.
      */

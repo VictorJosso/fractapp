@@ -20,10 +20,22 @@ import java.util.Optional;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
+/**
+ * The type Hello controller.
+ */
 public class HelloController {
 
+    /**
+     * The enum Fractal.
+     */
     enum FRACTAL{
+        /**
+         * Julia fractal.
+         */
         JULIA,
+        /**
+         * Mandelbrot fractal.
+         */
         MANDELBROT
     }
     @FXML
@@ -95,9 +107,15 @@ public class HelloController {
     private ResultImg resultImg;
     private File destinationFile;
 
+    /**
+     * Instantiates a new Hello controller.
+     */
     public HelloController() {
     }
 
+    /**
+     * Initialisation of the fields.
+     */
     @FXML
     private void initialize(){
         minXTextField.textProperty().addListener(new RegexValidator(Pattern.compile("(-*\\d*\\.*)+"), Pattern.compile("-?\\d+(\\.\\d+)?"), minXTextField));
@@ -111,10 +129,19 @@ public class HelloController {
         maxIterationsTextField.textProperty().addListener(new RegexValidator(Pattern.compile("(\\d*)+"), Pattern.compile("\\d+"), maxIterationsTextField));
     }
 
+    /**
+     * Sets main stage.
+     *
+     * @param mainStage the main stage
+     */
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
     }
 
+    /**
+     * Read the fields and interprets them.
+     * @return a FractalParams which attributes are supplied by the fields.
+     */
     private FractalParams getParams() {
         Parser parser = new Parser(functionTextField.getText());
         UnaryOperator<Complex> equation = parser.toFunction();
@@ -140,6 +167,11 @@ public class HelloController {
         );
     }
 
+    /**
+     * Calculate the fractal and can display it.
+     * @param baseFractal the wanted fractal.
+     * @param shouldDisplayImage true to display image, else false.
+     */
     private void startFractal(BaseFractal baseFractal, boolean shouldDisplayImage){
         this.progressBar.setDisable(false);
         this.saveButton.setDisable(true);
@@ -170,6 +202,10 @@ public class HelloController {
 
     }
 
+    /**
+     * Allow to choose the saving slot for the ResultImg.
+     * @return a FileChooser to save the fractal.
+     */
     private FileChooser getFileChooser(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Enregistrer la fractale");
@@ -180,6 +216,9 @@ public class HelloController {
         return fileChooser;
     }
 
+    /**
+     * Save the displayed image.
+     */
     @FXML
     private void saveFractal(){
         FileChooser fileChooser = this.getFileChooser();
@@ -189,6 +228,9 @@ public class HelloController {
         }
     }
 
+    /**
+     * Display help for the equation input.
+     */
     @FXML
     private void displayHelpEquation(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -201,7 +243,11 @@ public class HelloController {
         alert.showAndWait();
     }
 
-    private void warnIfTooBig(BaseFractal fractale){
+    /**
+     * Warn the user if the wanted fractal could be to big.
+     * @param fractal the wanted fractal.
+     */
+    private void warnIfTooBig(BaseFractal fractal){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Attention, image trop grande");
         alert.setHeaderText("Votre fractale peut faire planter l'application");
@@ -214,15 +260,17 @@ public class HelloController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isEmpty()){
-            this.warnIfTooBig(fractale);
+            this.warnIfTooBig(fractal);
         } else {
             this.destinationFile = this.getFileChooser().showSaveDialog(this.mainStage);
-            this.startFractal(fractale, result.get() == ButtonType.CANCEL);
+            this.startFractal(fractal, result.get() == ButtonType.CANCEL);
         }
     }
 
+    /**
+     * Generate a Julia set.
+     */
     private void generateJulia(){
-
         FractalParams params = getParams();
         Julia julia = Julia.fromParams(params);
 
@@ -233,6 +281,9 @@ public class HelloController {
         }
     }
 
+    /**
+     * Allow the user to invert color on the image.
+     */
     @FXML
     private void invertColors(){
         if (this.resultImg != null){
@@ -258,6 +309,9 @@ public class HelloController {
     }
 
 
+    /**
+     * Generate the Mandelbrot set.
+     */
     private void generateMandelbrot() {
         FractalParams params = getParams();
         Mandelbrot mandelbrot = Mandelbrot.fromParams(params);
@@ -269,6 +323,9 @@ public class HelloController {
         }
     }
 
+    /**
+     * Lunch the calculation of the fractal.
+     */
     @FXML
     private void onButtonGeneratePressed(){
         if (this.currentFractal == FRACTAL.JULIA){
@@ -280,6 +337,9 @@ public class HelloController {
         }
     }
 
+    /**
+     * Make the menu usable.
+     */
     @FXML
     private void setJuliaFractal(){
         this.currentFractal = FRACTAL.JULIA;
@@ -288,6 +348,9 @@ public class HelloController {
         this.helpFunctionButton.setDisable(false);
     }
 
+    /**
+     * Make the menu usable.
+     */
     @FXML
     private void setMandelbrotFractal(){
         this.currentFractal = FRACTAL.MANDELBROT;
