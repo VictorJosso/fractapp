@@ -24,7 +24,7 @@ Pour la version en ligne de commande :
 
 ## Version de Java
 
-Utiliser la Java 17 ou ultérieur.
+Utiliser la version 17 de Java ou une ultérieure.
 
 ## Auteurs :
     JOSSO, Victor
